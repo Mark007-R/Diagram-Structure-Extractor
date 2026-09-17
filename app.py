@@ -18,11 +18,52 @@ import cv2
 import streamlit as st
 from PIL import Image
 
+import ui_theme
 from src import pipeline as pl
 from src.graph import builder
 from src.schemas import PipelineConfig
 
 st.set_page_config(page_title="DiagraMine", page_icon=":triangular_ruler:", layout="wide")
+
+# mark.dev paper ground, Fraunces/Inter/JetBrains Mono, cerulean accent. The
+# same base colours are mirrored in .streamlit/config.toml, which is the only
+# way to reach widgets CSS cannot touch — change one, change both.
+ui_theme.apply_theme()
+
+# App-specific: what the shared theme cannot know about — the result images and
+# the JSON panel, which need to sit on a card rather than float on the paper
+# ground, and the status banners (the schema-valid badge is one). Tokens come
+# from ui_theme's :root block.
+st.markdown(
+    """
+<style>
+[data-testid="stImage"] img, [data-testid="stImageContainer"] img {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: var(--shadow-sm); }
+[data-testid="stImageCaption"], [data-testid="stCaptionContainer"] p {
+  font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size: .8rem; color: var(--ink-3); }
+[data-testid="stJson"] { background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: .5rem .75rem; box-shadow: var(--shadow-sm); }
+[data-testid="stSidebar"] h2 { font-size: 1.05rem; }
+
+/* status alerts: the portfolio's ok / warn / bad / info, always on their tint.
+   Streamlit paints the tint on the outer container; the kind is only named on
+   an inner child, hence :has(). */
+[data-testid="stAlertContainer"] { border: 1px solid transparent; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentInfo"]) {
+  background-color: rgba(47, 95, 138, .09); border-color: rgba(47, 95, 138, .22); color: #2f5f8a; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentSuccess"]) {
+  background-color: rgba(63, 122, 58, .10); border-color: rgba(63, 122, 58, .25); color: #3f7a3a; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentWarning"]) {
+  background-color: rgba(168, 106, 18, .10); border-color: rgba(168, 106, 18, .25); color: #a86a12; }
+[data-testid="stAlertContainer"]:has([data-testid="stAlertContentError"]) {
+  background-color: rgba(179, 38, 30, .08); border-color: rgba(179, 38, 30, .22); color: #b3261e; }
+[data-testid="stAlertContainer"] p, [data-testid="stAlertContainer"] li { color: inherit; }
+</style>
+""",
+    unsafe_allow_html=True,
+)
 
 st.title("DiagraMine — Diagram Structure Extraction")
 st.caption(
