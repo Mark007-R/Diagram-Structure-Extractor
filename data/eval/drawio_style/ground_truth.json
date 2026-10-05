@@ -1,0 +1,470 @@
+{
+  "drawio_01.png": {
+    "name": "Web shop on AWS",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Browser",
+      "Load Balancer",
+      "API Server",
+      "Worker",
+      "Orders DB",
+      "Payment Gateway"
+    ],
+    "arrows": [
+      {
+        "source": "Browser",
+        "target": "Load Balancer",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Load Balancer",
+        "target": "API Server",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Load Balancer",
+        "target": "Worker",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "API Server",
+        "target": "Orders DB",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "API Server",
+        "target": "Payment Gateway",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Payment Gateway",
+        "target": "Worker",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_02.png": {
+    "name": "Streaming data platform",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Mobile App",
+      "Ingest API",
+      "Stream Processor",
+      "Batch Jobs",
+      "Data Lake",
+      "Warehouse"
+    ],
+    "arrows": [
+      {
+        "source": "Mobile App",
+        "target": "Ingest API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Mobile App",
+        "target": "Stream Processor",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Ingest API",
+        "target": "Batch Jobs",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Stream Processor",
+        "target": "Data Lake",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Batch Jobs",
+        "target": "Warehouse",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Stream Processor",
+        "target": "Batch Jobs",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Batch Jobs",
+        "target": "Data Lake",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_03.png": {
+    "name": "Kubernetes microservices",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Client App",
+      "Web UI",
+      "Auth Service",
+      "Order Service",
+      "Inventory Service",
+      "Redis Cache",
+      "Postgres"
+    ],
+    "arrows": [
+      {
+        "source": "Client App",
+        "target": "Web UI",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Web UI",
+        "target": "Auth Service",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Web UI",
+        "target": "Order Service",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Auth Service",
+        "target": "Redis Cache",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Order Service",
+        "target": "Postgres",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Order Service",
+        "target": "Inventory Service",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Order Service",
+        "target": "Auth Service",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Inventory Service",
+        "target": "Postgres",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_04.png": {
+    "name": "Hybrid on-prem to Azure connectivity",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "ERP Server",
+      "Legacy DB",
+      "Domain Controller",
+      "App Gateway",
+      "Web App",
+      "SQL MI"
+    ],
+    "arrows": [
+      {
+        "source": "ERP Server",
+        "target": "Legacy DB",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Domain Controller",
+        "target": "ERP Server",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Domain Controller",
+        "target": "App Gateway",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "App Gateway",
+        "target": "Web App",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Web App",
+        "target": "SQL MI",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "App Gateway",
+        "target": "SQL MI",
+        "style": "solid",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_05.png": {
+    "name": "CI/CD delivery pipeline",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Developer",
+      "Git Repo",
+      "CI Runner",
+      "Artifacts",
+      "Staging",
+      "Production",
+      "Monitoring"
+    ],
+    "arrows": [
+      {
+        "source": "Developer",
+        "target": "Git Repo",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Git Repo",
+        "target": "CI Runner",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "CI Runner",
+        "target": "Artifacts",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Artifacts",
+        "target": "Staging",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Staging",
+        "target": "Production",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Production",
+        "target": "Monitoring",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Monitoring",
+        "target": "Developer",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "CI Runner",
+        "target": "Staging",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_06.png": {
+    "name": "IoT telemetry",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Sensor A",
+      "Sensor B",
+      "Edge Gateway",
+      "IoT Hub",
+      "Rules Engine",
+      "Telemetry DB",
+      "Dashboard",
+      "Ops Team"
+    ],
+    "arrows": [
+      {
+        "source": "Sensor A",
+        "target": "Edge Gateway",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Sensor B",
+        "target": "Edge Gateway",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Edge Gateway",
+        "target": "IoT Hub",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "IoT Hub",
+        "target": "Rules Engine",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Rules Engine",
+        "target": "Telemetry DB",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Telemetry DB",
+        "target": "Dashboard",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Rules Engine",
+        "target": "Ops Team",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Ops Team",
+        "target": "Dashboard",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_07.png": {
+    "name": "OAuth token flow",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Client",
+      "Identity Provider",
+      "Resource API",
+      "Token Cache",
+      "Audit Log",
+      "SIEM"
+    ],
+    "arrows": [
+      {
+        "source": "Client",
+        "target": "Identity Provider",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Client",
+        "target": "Resource API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Resource API",
+        "target": "Identity Provider",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Identity Provider",
+        "target": "Token Cache",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Resource API",
+        "target": "Audit Log",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Audit Log",
+        "target": "SIEM",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "drawio_08.png": {
+    "name": "Analytics on Google Cloud",
+    "source": "synthetic-drawio-style",
+    "components": [
+      "Partner SFTP",
+      "Cloud Storage",
+      "Dataflow",
+      "BigQuery",
+      "Looker",
+      "Model API",
+      "Feature Store",
+      "Vertex AI"
+    ],
+    "arrows": [
+      {
+        "source": "Partner SFTP",
+        "target": "Cloud Storage",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Cloud Storage",
+        "target": "Dataflow",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Dataflow",
+        "target": "BigQuery",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "BigQuery",
+        "target": "Looker",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Dataflow",
+        "target": "Model API",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Model API",
+        "target": "Feature Store",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Vertex AI",
+        "target": "Looker",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Feature Store",
+        "target": "Vertex AI",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  }
+}

@@ -1,0 +1,606 @@
+{
+  "heldout_01.png": {
+    "name": "Online checkout",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Customer",
+      "Web App",
+      "API Gateway",
+      "Orders Service",
+      "Payments Service",
+      "Orders DB",
+      "Payment Provider"
+    ],
+    "arrows": [
+      {
+        "source": "Customer",
+        "target": "Web App",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Web App",
+        "target": "API Gateway",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "API Gateway",
+        "target": "Orders Service",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "API Gateway",
+        "target": "Payments Service",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders Service",
+        "target": "Orders DB",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Payments Service",
+        "target": "Payment Provider",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders Service",
+        "target": "Payments Service",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_02.png": {
+    "name": "Search platform",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Browser",
+      "Mobile App",
+      "Load Balancer",
+      "Auth Service",
+      "Search Service",
+      "Session Cache",
+      "Search Index"
+    ],
+    "arrows": [
+      {
+        "source": "Browser",
+        "target": "Load Balancer",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Mobile App",
+        "target": "Load Balancer",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Load Balancer",
+        "target": "Auth Service",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Load Balancer",
+        "target": "Search Service",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Auth Service",
+        "target": "Session Cache",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Search Service",
+        "target": "Search Index",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Auth Service",
+        "target": "Search Service",
+        "style": "solid",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_03.png": {
+    "name": "Order event routing",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Event Router",
+      "Order Intake",
+      "Inventory",
+      "Billing",
+      "Shipping",
+      "Audit Log",
+      "Email Gateway"
+    ],
+    "arrows": [
+      {
+        "source": "Order Intake",
+        "target": "Event Router",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Event Router",
+        "target": "Inventory",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Event Router",
+        "target": "Billing",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Event Router",
+        "target": "Shipping",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Event Router",
+        "target": "Audit Log",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Event Router",
+        "target": "Email Gateway",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Inventory",
+        "target": "Shipping",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_04.png": {
+    "name": "AWS web tier",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Internet",
+      "Admin",
+      "Load Balancer",
+      "Bastion Host",
+      "App Server",
+      "Primary DB",
+      "Redis Cache"
+    ],
+    "arrows": [
+      {
+        "source": "Internet",
+        "target": "Load Balancer",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Admin",
+        "target": "Bastion Host",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Load Balancer",
+        "target": "App Server",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "App Server",
+        "target": "Primary DB",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "App Server",
+        "target": "Redis Cache",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Bastion Host",
+        "target": "App Server",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_05.png": {
+    "name": "Payment subsystem",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Merchant Portal",
+      "Payment API",
+      "Fraud Check",
+      "Ledger",
+      "Risk Rules",
+      "Settlement Job",
+      "Notifier"
+    ],
+    "arrows": [
+      {
+        "source": "Merchant Portal",
+        "target": "Payment API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Payment API",
+        "target": "Fraud Check",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Fraud Check",
+        "target": "Risk Rules",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Fraud Check",
+        "target": "Ledger",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Ledger",
+        "target": "Settlement Job",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Settlement Job",
+        "target": "Notifier",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Payment API",
+        "target": "Notifier",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Ledger",
+        "target": "Risk Rules",
+        "style": "solid",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_06.png": {
+    "name": "Streaming analytics pipeline",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Web Clients",
+      "IoT Devices",
+      "Ingest API",
+      "Event Queue",
+      "Stream Processor",
+      "Data Lake",
+      "Warehouse",
+      "BI Dashboard"
+    ],
+    "arrows": [
+      {
+        "source": "Web Clients",
+        "target": "Ingest API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "IoT Devices",
+        "target": "Ingest API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Ingest API",
+        "target": "Event Queue",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Event Queue",
+        "target": "Stream Processor",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Stream Processor",
+        "target": "Data Lake",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Stream Processor",
+        "target": "Warehouse",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Warehouse",
+        "target": "BI Dashboard",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Data Lake",
+        "target": "BI Dashboard",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Stream Processor",
+        "target": "Ingest API",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_07.png": {
+    "name": "Web app with background jobs",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Visitor",
+      "Edge Proxy",
+      "App Server",
+      "Session Store",
+      "Job Queue",
+      "Worker",
+      "Primary DB"
+    ],
+    "arrows": [
+      {
+        "source": "Visitor",
+        "target": "Edge Proxy",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Edge Proxy",
+        "target": "App Server",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "App Server",
+        "target": "Session Store",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "App Server",
+        "target": "Job Queue",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "App Server",
+        "target": "Primary DB",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Job Queue",
+        "target": "Worker",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Worker",
+        "target": "Primary DB",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Session Store",
+        "target": "Primary DB",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_08.png": {
+    "name": "ML platform",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Feature Store",
+      "Training Pipeline",
+      "Model Registry",
+      "Serving API",
+      "Client App",
+      "Monitoring",
+      "Metrics DB"
+    ],
+    "arrows": [
+      {
+        "source": "Feature Store",
+        "target": "Training Pipeline",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Feature Store",
+        "target": "Model Registry",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Training Pipeline",
+        "target": "Model Registry",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Model Registry",
+        "target": "Serving API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Serving API",
+        "target": "Client App",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Serving API",
+        "target": "Monitoring",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Monitoring",
+        "target": "Metrics DB",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Metrics DB",
+        "target": "Training Pipeline",
+        "style": "solid",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_09.png": {
+    "name": "Orders and billing on Kubernetes",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Customer",
+      "Admin Console",
+      "Orders API",
+      "Orders Worker",
+      "Orders DB",
+      "Billing API",
+      "Invoice Queue",
+      "Stripe",
+      "Data Warehouse"
+    ],
+    "arrows": [
+      {
+        "source": "Customer",
+        "target": "Orders API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Admin Console",
+        "target": "Orders API",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders API",
+        "target": "Orders Worker",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders Worker",
+        "target": "Orders DB",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders API",
+        "target": "Billing API",
+        "style": "solid",
+        "bidirectional": true
+      },
+      {
+        "source": "Billing API",
+        "target": "Stripe",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Billing API",
+        "target": "Invoice Queue",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Invoice Queue",
+        "target": "Orders Worker",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Invoice Queue",
+        "target": "Data Warehouse",
+        "style": "solid",
+        "bidirectional": false
+      },
+      {
+        "source": "Orders DB",
+        "target": "Data Warehouse",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  },
+  "heldout_10.png": {
+    "name": "Mobile login",
+    "source": "synthetic-drawio-style-heldout-2",
+    "components": [
+      "Mobile User",
+      "Auth Server",
+      "Identity Provider",
+      "Token Store"
+    ],
+    "arrows": [
+      {
+        "source": "Mobile User",
+        "target": "Auth Server",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Auth Server",
+        "target": "Identity Provider",
+        "style": "dashed",
+        "bidirectional": false
+      },
+      {
+        "source": "Auth Server",
+        "target": "Token Store",
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Identity Provider",
+        "target": "Token Store",
+        "style": "dashed",
+        "bidirectional": false
+      }
+    ],
+    "icons": []
+  }
+}
