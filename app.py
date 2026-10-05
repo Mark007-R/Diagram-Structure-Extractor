@@ -77,7 +77,7 @@ st.caption(
 # ── Sidebar config ───────────────────────────────────────────────────────────
 st.sidebar.header("Pipeline configuration")
 # "none" skips that stage entirely; it contributes an empty list to the result.
-text_detector = st.sidebar.selectbox("Text detector", ["easyocr", "paddleocr", "none"], index=0)
+text_detector = st.sidebar.selectbox("Text detector", ["paddleocr", "easyocr", "none"], index=0)
 box_detector = st.sidebar.selectbox("Box detector", ["canny_contours", "hough", "yolo", "none"], index=0)
 arrow_detector = st.sidebar.selectbox(
     "Arrow detector", ["directed_lines", "hough_lines", "pixel_scan", "cnn", "none"], index=0)
@@ -86,13 +86,12 @@ outside_box_gate = st.sidebar.checkbox(
     "Outside-box gate (Day-3 fix)", value=False,
     help="Rejects arrow segments whose midpoint sits inside a box (border artifacts). "
          "Calibrated for hough_lines; off by default because with directed_lines "
-         "it costs ~0.08 rel-F1.",
+         "it costs ~0.10 rel-F1.",
 )
 graph_layout = st.sidebar.selectbox("Graph layout", ["kamada_kawai", "spring"], index=0)
 st.sidebar.markdown(
-    "**Default config** — EasyOCR + Canny+contours + directed lines + template-matching. "
-    "Box, arrow and icon defaults are the Phase-2 leaderboard champions; PaddleOCR edges "
-    "EasyOCR on text (0.955 vs 0.943 F1). Pick **none** to skip a stage."
+    "**Default config** — PaddleOCR + Canny+contours + directed lines + template-matching, "
+    "the Phase-2 leaderboard champions. Pick **none** to skip a stage."
 )
 
 # ── Upload ───────────────────────────────────────────────────────────────────
@@ -121,7 +120,7 @@ config = PipelineConfig(
     outside_box_gate=outside_box_gate, graph_layout=graph_layout,
 )
 
-with st.spinner("Extracting structure (EasyOCR weights download on first run)..."):
+with st.spinner("Extracting structure (OCR model weights download on first run)..."):
     t0 = time.perf_counter()
     result = pl.extract(tmp_path, config)
     annotated = pl.annotate(tmp_path, result)

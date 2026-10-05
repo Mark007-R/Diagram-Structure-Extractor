@@ -5,9 +5,10 @@
 # Probe:  curl http://localhost:8000/health
 # Use:    curl -F "file=@diagram.png" http://localhost:8000/extract | jq .
 #
-# Image philosophy: slim Python base + only the OS libs OpenCV / EasyOCR /
-# matplotlib require. EasyOCR's English model weights (~64 MB) download on
-# first /extract call rather than at build, so the image stays compact for CI.
+# Image philosophy: slim Python base + only the OS libs OpenCV / PaddleOCR /
+# matplotlib require. The OCR model weights (PaddleOCR's English det/rec/cls
+# models, ~15 MB) download on the first /extract call rather than at build, so
+# the image stays compact for CI.
 
 FROM python:3.11-slim
 
@@ -16,8 +17,10 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     DEBIAN_FRONTEND=noninteractive
 
-# OS libs: OpenCV needs libGL + libglib; matplotlib needs libfreetype/libpng.
+# OS libs: OpenCV needs libGL + libglib; matplotlib needs libfreetype/libpng;
+# paddlepaddle's CPU build links the OpenMP runtime (libgomp).
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        libgomp1 \
         libgl1 \
         libglib2.0-0 \
         libsm6 \

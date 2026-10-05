@@ -2,7 +2,7 @@
 
 Wires the Day-3 Phase-2 champions into one configurable, data-driven pipeline:
 
-    text  -> EasyOCR           (F1 0.943; PaddleOCR 0.955 is the bake-off champion)
+    text  -> PaddleOCR         (champion: F1 0.955)
     box   -> Canny + contours  (champion: F1 1.000)
     arrow -> directed lines    (champion: F1 0.962; any-angle Hough, arrowhead-oriented)
     icon  -> template matching (champion: F1 1.000 on curated library)
@@ -15,7 +15,7 @@ final `ExtractionResult` schema-valid 100% of the time (the reliability metric
 DiagraMine beats Claude Vision on).
 
 Usage:
-    python -m src.pipeline <image_path> [--out DIR] [--text easyocr]
+    python -m src.pipeline <image_path> [--out DIR] [--text paddleocr]
                            [--box canny_contours] [--arrow directed_lines]
                            [--icon template_matching] [--gate]
 """
@@ -112,11 +112,15 @@ def _icon_detect(name: str) -> Callable[[str], dict]:
     return m.detect
 
 
-def _safe(fn: Callable[[str], dict], image_path: str, key: str) -> tuple[list, float, str | None]:
-    """Run a detector, returning (items, runtime, error). On failure return an
-    empty list so the overall result stays schema-valid."""
+def _safe(resolve: Callable[[str], Callable[[str], dict]], name: str,
+          image_path: str, key: str) -> tuple[list, float, str | None]:
+    """Load and run a detector, returning (items, runtime, error). On failure
+    return an empty list so the overall result stays schema-valid. Loading is
+    inside the guard too: detector modules import heavy libraries lazily, and
+    an import that fails (a missing package, a DLL conflict) must degrade the
+    same way as a detector that raises."""
     try:
-        out = fn(image_path)
+        out = resolve(name)(image_path)
         return out.get(key, []), float(out.get("runtime_seconds", 0.0)), None
     except Exception as e:  # noqa: BLE001 — reliability over strictness here
         return [], 0.0, f"{type(e).__name__}: {e}"
@@ -133,10 +137,10 @@ def extract(image_path: str, config: PipelineConfig | None = None) -> Extraction
     h_img, w_img = img.shape[:2]
 
     t0 = time.perf_counter()
-    raw_texts, rt_text, err_text = _safe(_text_detect(config.text_detector), image_path, "texts")
-    raw_boxes, rt_box, err_box = _safe(_box_detect(config.box_detector), image_path, "boxes")
-    raw_arrows, rt_arrow, err_arrow = _safe(_arrow_detect(config.arrow_detector), image_path, "arrows")
-    raw_icons, rt_icon, err_icon = _safe(_icon_detect(config.icon_detector), image_path, "icons")
+    raw_texts, rt_text, err_text = _safe(_text_detect, config.text_detector, image_path, "texts")
+    raw_boxes, rt_box, err_box = _safe(_box_detect, config.box_detector, image_path, "boxes")
+    raw_arrows, rt_arrow, err_arrow = _safe(_arrow_detect, config.arrow_detector, image_path, "arrows")
+    raw_icons, rt_icon, err_icon = _safe(_icon_detect, config.icon_detector, image_path, "icons")
 
     # Label boxes from contained text, then build relationships data-driven.
     g0 = time.perf_counter()
@@ -260,7 +264,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description="DiagraMine modular extraction pipeline")
     p.add_argument("image", help="path to the diagram image")
     p.add_argument("--out", default=".", help="output directory")
-    p.add_argument("--text", default="easyocr", choices=["easyocr", "paddleocr", "tesseract", "none"])
+    p.add_argument("--text", default="paddleocr", choices=["paddleocr", "easyocr", "tesseract", "none"])
     p.add_argument("--box", default="canny_contours", choices=["canny_contours", "hough", "yolo", "none"])
     p.add_argument("--arrow", default="directed_lines",
                    choices=["directed_lines", "hough_lines", "pixel_scan", "cnn", "none"])

@@ -6,11 +6,18 @@ return format is [[(bbox, (text, conf)), ...]] for the single-image case.
 from __future__ import annotations
 
 import logging
+import os
 import time
 from typing import List
 
 import cv2
 import numpy as np
+
+# paddlepaddle 2.6's generated protobuf code only loads under protobuf's
+# pure-Python implementation when protobuf 4+ is installed (requirements.txt
+# pins 3.20.x, where this is already the case). Only takes effect if nothing
+# has imported protobuf yet; harmless otherwise.
+os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
 
 # Silence paddle's verbose logger
 logging.getLogger("ppocr").setLevel(logging.ERROR)
@@ -21,6 +28,15 @@ _OCR = None
 def _get_ocr():
     global _OCR
     if _OCR is None:
+        # torch must load before paddle. paddleocr imports albumentations,
+        # which imports torch; by then paddle has loaded its older bundled
+        # OpenMP runtime (libiomp5md.dll on Windows) and torch fails to load
+        # ("WinError 127 ... shm.dll"), leaving every later torch-backed
+        # detector (EasyOCR, CLIP, the arrow CNN) broken in this process too.
+        try:
+            import torch  # noqa: F401
+        except ImportError:
+            pass
         from paddleocr import PaddleOCR
         _OCR = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
     return _OCR
