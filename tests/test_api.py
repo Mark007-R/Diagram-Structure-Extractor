@@ -26,6 +26,13 @@ def test_health_endpoint():
     assert body["service"] == "diagramine"
 
 
+def test_root_redirects_to_docs():
+    c = _client()
+    r = c.get("/", follow_redirects=False)
+    assert r.status_code in (302, 307)
+    assert r.headers["location"] == "/docs"
+
+
 def test_extract_returns_schema_valid_json(test_image: str):
     """POST /extract must return a JSON body with structure.image, structure.boxes,
     structure.relationships keys — schema-valid by Pydantic construction."""
