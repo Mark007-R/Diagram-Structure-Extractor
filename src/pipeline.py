@@ -2,9 +2,9 @@
 
 Wires the Day-3 Phase-2 champions into one configurable, data-driven pipeline:
 
-    text  -> PaddleOCR         (champion: F1 0.955)
+    text  -> PaddleOCR         (champion: F1 0.962)
     box   -> Canny + contours  (champion: F1 1.000)
-    arrow -> directed lines    (champion: F1 0.962; any-angle Hough, arrowhead-oriented)
+    arrow -> directed lines    (champion: F1 1.000; any-angle Hough, arrowhead-oriented)
     icon  -> template matching (champion: F1 1.000 on curated library)
 
 (F1 from results/phase2_leaderboard.csv.)
@@ -31,6 +31,7 @@ from typing import Callable, Dict
 import cv2
 import numpy as np
 
+from src.box_detection import icon_nodes
 from src.graph import builder
 from src.schemas import (
     ArrowElement,
@@ -142,6 +143,14 @@ def extract(image_path: str, config: PipelineConfig | None = None) -> Extraction
     raw_arrows, rt_arrow, err_arrow = _safe(_arrow_detect, config.arrow_detector, image_path, "arrows")
     raw_icons, rt_icon, err_icon = _safe(_icon_detect, config.icon_detector, image_path, "icons")
 
+    # Icon nodes (a database cylinder over its caption) that contour box
+    # detection misses; part of the box stage, so skipped when it is "none".
+    if config.box_detector != "none" and not err_box:
+        try:
+            raw_boxes = raw_boxes + icon_nodes.find(img, raw_texts, raw_boxes)
+        except Exception as e:  # noqa: BLE001 — degrade like any other stage
+            err_box = f"icon nodes: {type(e).__name__}: {e}"
+
     # Label boxes from contained text, then build relationships data-driven.
     g0 = time.perf_counter()
     raw_boxes = builder.label_boxes(raw_boxes, raw_texts)
@@ -203,9 +212,20 @@ def annotate(image_path: str, result: ExtractionResult) -> np.ndarray:
     for t in result.texts:
         cv2.rectangle(img, (t.x, t.y), (t.x + t.w, t.y + t.h), (255, 100, 0), 1)
     for a in result.arrows:
-        cv2.line(img, (a.x1, a.y1), (a.x2, a.y2), (0, 0, 255), 2)
-        cv2.circle(img, (a.x1, a.y1), 5, (0, 0, 255), -1)
-        cv2.circle(img, (a.x2, a.y2), 5, (0, 0, 255), -1)
+        pts = np.array(a.points or [[a.x1, a.y1], [a.x2, a.y2]], dtype=np.int32)
+        cv2.polylines(img, [pts], False, (0, 0, 255), 2)
+        # Tips only where heads were detected: at (x2, y2), and at the tail
+        # too for a double-headed connector. An end without a head is a dot,
+        # so a line with no detected direction shows none.
+        tips = ([(pts[-2], pts[-1])] if a.has_head or a.bidirectional else []) + \
+               ([(pts[1], pts[0])] if a.bidirectional else [])
+        for (bx, by), (tx, ty) in tips:
+            cv2.arrowedLine(img, (int(bx), int(by)), (int(tx), int(ty)), (0, 0, 255), 2, tipLength=min(
+                0.5, 14.0 / max(1.0, float(np.hypot(tx - bx, ty - by)))))
+        if not a.bidirectional:
+            cv2.circle(img, (a.x1, a.y1), 4, (0, 0, 255), -1)
+        if not (a.has_head or a.bidirectional):
+            cv2.circle(img, (a.x2, a.y2), 4, (0, 0, 255), -1)
     for ic in result.icons:
         cv2.rectangle(img, (ic.x, ic.y), (ic.x + ic.w, ic.y + ic.h), (255, 0, 255), 2)
         cv2.putText(img, ic.label[:20], (ic.x, ic.y - 5),
@@ -227,9 +247,9 @@ def write_csv(result: ExtractionResult, output_path: str) -> None:
             w.writerow([b.label, b.x, b.y, b.w, b.h, b.entity_type])
         w.writerow([])
         w.writerow(["=== RELATIONSHIPS ==="])
-        w.writerow(["Source", "Target", "Line Style", "Direction", "Relationship", "Detected"])
+        w.writerow(["Source", "Target", "Line Style", "Direction", "Relationship", "Bidirectional", "Detected"])
         for r in result.relationships:
-            w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship, r.detected])
+            w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship, r.bidirectional, r.detected])
 
 
 def run(image_path: str, output_dir: str, config: PipelineConfig | None = None) -> ExtractionResult:

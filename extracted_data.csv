@@ -20,7 +20,7 @@ DB,781,349,25,17,0.998
 
 === BOXES ===
 Label,X,Y,Width,Height,Entity Type
-,217,192,179,117,component
+Back-End,217,192,179,117,component
 Elasticsearch Serverless elasticsearch,939,89,242,64,component
 Plant An App - AWS,152,87,242,64,component
 Server Website,149,9,242,64,component
@@ -30,14 +30,16 @@ Indices,904,195,133,100,component
 ELSER Model,1095,186,123,108,component
 On-prem hardware,637,87,154,64,component
 Elastic Language Client,231,210,123,70,component
-,768,269,48,75,component
-,420,241,60,59,component
+DB,768,269,48,75,component
+Database,420,241,60,59,component
 ,158,92,53,52,component
 
 === RELATIONSHIPS ===
-Source,Target,Line Style,Direction,Relationship,Detected
-Plant An App - AWS,ELSER Model,solid,horizontal,connects_to,True
-Indices,ELSER Model,solid,horizontal,connects_to,True
-Search UI,Plant An App - AWS,solid,horizontal,connects_to,True
-Elastic Connector for MS SQL,Indices,solid,diagonal,connects_to,True
-Plant An App - AWS,Server Website,solid,vertical,connects_to,True
+Source,Target,Line Style,Direction,Relationship,Bidirectional,Detected
+Elastic Language Client,ELSER Model,solid,elbow,connects_to,True,True
+Elastic Connector for MS SQL,Indices,solid,horizontal,connects_to,False,True
+ELSER Model,Indices,solid,horizontal,connects_to,False,True
+Elastic Language Client,Search UI,solid,diagonal,connects_to,True,True
+Indices,ELSER Model,solid,horizontal,connects_to,False,True
+Back-End,Database,solid,diagonal,connects_to,False,True
+Database,Elastic Connector for MS SQL,solid,horizontal,connects_to,False,True

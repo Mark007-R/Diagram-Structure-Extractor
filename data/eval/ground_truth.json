@@ -456,6 +456,7 @@
     "components": [
       "Server Website",
       "Plant An App - AWS",
+      "Back-End",
       "Search UI",
       "Elastic Language Client",
       "Database",
@@ -467,19 +468,22 @@
     ],
     "arrows": [
       {
-        "source": "Server Website",
-        "target": "Plant An App - AWS",
-        "style": "solid"
-      },
-      {
         "source": "Search UI",
         "target": "Elastic Language Client",
-        "style": "solid"
+        "style": "dashed",
+        "bidirectional": true
+      },
+      {
+        "source": "Back-End",
+        "target": "Database",
+        "style": "dashed",
+        "bidirectional": true
       },
       {
         "source": "Elastic Language Client",
-        "target": "Database",
-        "style": "solid"
+        "target": "ELSER Model",
+        "style": "dashed",
+        "bidirectional": true
       },
       {
         "source": "Database",
@@ -488,12 +492,12 @@
       },
       {
         "source": "Elastic Connector for MS SQL",
-        "target": "DB",
+        "target": "Indices",
         "style": "dashed"
       },
       {
         "source": "Elastic Connector for MS SQL",
-        "target": "Indices",
+        "target": "DB",
         "style": "dashed"
       },
       {
@@ -502,8 +506,8 @@
         "style": "dashed"
       },
       {
-        "source": "Elastic Language Client",
-        "target": "Elasticsearch Serverless",
+        "source": "ELSER Model",
+        "target": "Indices",
         "style": "dashed"
       }
     ],

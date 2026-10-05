@@ -17,7 +17,7 @@ import tempfile
 
 import cv2
 from fastapi import FastAPI, File, Query, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel
 
 from src import pipeline
@@ -39,10 +39,16 @@ class ExtractResponse(BaseModel):
 def _csv_string(result: ExtractionResult) -> str:
     buf = io.StringIO()
     w = csv.writer(buf)
-    w.writerow(["source", "target", "line_style", "direction", "relationship"])
+    w.writerow(["source", "target", "line_style", "direction", "relationship", "bidirectional"])
     for r in result.relationships:
-        w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship])
+        w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship, r.bidirectional])
     return buf.getvalue()
+
+
+@app.get("/", include_in_schema=False)
+async def root() -> RedirectResponse:
+    """The service has no page of its own; send visitors to the interactive docs."""
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")

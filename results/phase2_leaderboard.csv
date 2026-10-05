@@ -1,20 +1,20 @@
 stage,champion,precision,recall,f1,secondary,avg_runtime_seconds,notes
-text,paddleocr,0.915,1.0,0.955,0.996,0.693,fuzz>=60 over 15 diagrams
-box,canny_contours,1.0,1.0,1.0,0.0,0.003,IoU>=0.5 over 14 generated diagrams
-arrow,directed_lines,0.944,0.981,0.962,,0.021,"unordered src/tgt pairs, 14 scored diagrams"
-icon,template_matching,1.0,1.0,1.0,presence_f1=1.0 fps_empty_gt=0,0.173,by-label fuzzy>=80; GT icons only present on search_interview_test.png
+text,paddleocr,0.927,1.0,0.962,0.996,0.682,fuzz>=60 over 15 diagrams
+box,canny_contours,1.0,1.0,1.0,0.0,0.004,IoU>=0.5 over 14 generated diagrams
+arrow,directed_lines,1.0,1.0,1.0,,0.188,"unordered src/tgt pairs, 14 scored diagrams"
+icon,template_matching,1.0,1.0,1.0,presence_f1=1.0 fps_empty_gt=0,0.184,by-label fuzzy>=80; GT icons only present on search_interview_test.png
 
 # Full leaderboard below for transparency
 stage,rank,detector,precision,recall,f1,avg_runtime_seconds,notes
-text,1,paddleocr,0.915,1.0,0.955,0.693,fuzz>=60 over 15 diagrams
-text,2,easyocr,0.893,1.0,0.943,2.334,fuzz>=60 over 15 diagrams
-box,1,canny_contours,1.0,1.0,1.0,0.003,IoU>=0.5 over 14 generated diagrams
-box,2,hough_rectangles,0.242,0.692,0.359,0.009,IoU>=0.5 over 14 generated diagrams
-box,3,yolov8_zero_shot,0.0,0.0,0.0,0.066,IoU>=0.5 over 14 generated diagrams
-arrow,1,directed_lines,0.944,0.981,0.962,0.021,"unordered src/tgt pairs, 14 scored diagrams"
-arrow,2,cnn_verified,0.727,0.462,0.565,0.041,"unordered src/tgt pairs, 14 scored diagrams"
-arrow,3,hough_lines,0.49,0.462,0.475,0.018,"unordered src/tgt pairs, 14 scored diagrams"
-arrow,4,pixel_scan,0.7,0.135,0.226,0.184,"unordered src/tgt pairs, 14 scored diagrams"
-icon,1,template_matching,1.0,1.0,1.0,0.173,by-label fuzzy>=80; GT icons only present on search_interview_test.png
-icon,2,clip_zero_shot,0.5,1.0,0.667,1.064,by-label fuzzy>=80; GT icons only present on search_interview_test.png
+text,1,paddleocr,0.927,1.0,0.962,0.682,fuzz>=60 over 15 diagrams
+text,2,easyocr,0.905,1.0,0.95,2.021,fuzz>=60 over 15 diagrams
+box,1,canny_contours,1.0,1.0,1.0,0.004,IoU>=0.5 over 14 generated diagrams
+box,2,hough_rectangles,0.242,0.692,0.359,0.011,IoU>=0.5 over 14 generated diagrams
+box,3,yolov8_zero_shot,0.0,0.0,0.0,0.063,IoU>=0.5 over 14 generated diagrams
+arrow,1,directed_lines,1.0,1.0,1.0,0.188,"unordered src/tgt pairs, 14 scored diagrams"
+arrow,2,cnn_verified,0.727,0.462,0.565,0.04,"unordered src/tgt pairs, 14 scored diagrams"
+arrow,3,hough_lines,0.49,0.462,0.475,0.017,"unordered src/tgt pairs, 14 scored diagrams"
+arrow,4,pixel_scan,0.7,0.135,0.226,0.154,"unordered src/tgt pairs, 14 scored diagrams"
+icon,1,template_matching,1.0,1.0,1.0,0.184,by-label fuzzy>=80; GT icons only present on search_interview_test.png
+icon,2,clip_zero_shot,0.5,1.0,0.667,1.355,by-label fuzzy>=80; GT icons only present on search_interview_test.png
 icon,3,hsv,0.0,0.0,0.0,0.002,by-label fuzzy>=80; GT icons only present on search_interview_test.png

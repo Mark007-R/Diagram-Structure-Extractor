@@ -1,0 +1,444 @@
+{
+  "drawio_01.png": {
+    "image_size": [
+      1109,
+      514
+    ],
+    "boxes": [
+      {
+        "label": "Browser",
+        "x": 12,
+        "y": 222,
+        "w": 120,
+        "h": 60
+      },
+      {
+        "label": "Load Balancer",
+        "x": 312,
+        "y": 222,
+        "w": 130,
+        "h": 60
+      },
+      {
+        "label": "API Server",
+        "x": 572,
+        "y": 137,
+        "w": 130,
+        "h": 60
+      },
+      {
+        "label": "Worker",
+        "x": 572,
+        "y": 362,
+        "w": 130,
+        "h": 60
+      },
+      {
+        "label": "Orders DB",
+        "x": 762,
+        "y": 138,
+        "w": 52,
+        "h": 58
+      },
+      {
+        "label": "Payment Gateway",
+        "x": 957,
+        "y": 222,
+        "w": 140,
+        "h": 60
+      }
+    ]
+  },
+  "drawio_02.png": {
+    "image_size": [
+      1210,
+      540
+    ],
+    "boxes": [
+      {
+        "label": "Mobile App",
+        "x": 90,
+        "y": 90,
+        "w": 150,
+        "h": 60
+      },
+      {
+        "label": "Ingest API",
+        "x": 90,
+        "y": 330,
+        "w": 150,
+        "h": 60
+      },
+      {
+        "label": "Stream Processor",
+        "x": 520,
+        "y": 90,
+        "w": 160,
+        "h": 60
+      },
+      {
+        "label": "Batch Jobs",
+        "x": 520,
+        "y": 328,
+        "w": 160,
+        "h": 64
+      },
+      {
+        "label": "Data Lake",
+        "x": 980,
+        "y": 88,
+        "w": 56,
+        "h": 64
+      },
+      {
+        "label": "Warehouse",
+        "x": 980,
+        "y": 328,
+        "w": 56,
+        "h": 64
+      }
+    ]
+  },
+  "drawio_03.png": {
+    "image_size": [
+      1099,
+      624
+    ],
+    "boxes": [
+      {
+        "label": "Client App",
+        "x": 12,
+        "y": 152,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Web UI",
+        "x": 347,
+        "y": 152,
+        "w": 170,
+        "h": 60
+      },
+      {
+        "label": "Auth Service",
+        "x": 657,
+        "y": 152,
+        "w": 180,
+        "h": 60
+      },
+      {
+        "label": "Order Service",
+        "x": 657,
+        "y": 302,
+        "w": 180,
+        "h": 60
+      },
+      {
+        "label": "Inventory Service",
+        "x": 657,
+        "y": 452,
+        "w": 180,
+        "h": 60
+      },
+      {
+        "label": "Redis Cache",
+        "x": 1022,
+        "y": 150,
+        "w": 52,
+        "h": 64
+      },
+      {
+        "label": "Postgres",
+        "x": 1022,
+        "y": 300,
+        "w": 52,
+        "h": 64
+      }
+    ]
+  },
+  "drawio_04.png": {
+    "image_size": [
+      1168,
+      428
+    ],
+    "boxes": [
+      {
+        "label": "ERP Server",
+        "x": 64,
+        "y": 104,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Legacy DB",
+        "x": 284,
+        "y": 102,
+        "w": 52,
+        "h": 64
+      },
+      {
+        "label": "Domain Controller",
+        "x": 64,
+        "y": 284,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "App Gateway",
+        "x": 764,
+        "y": 104,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Web App",
+        "x": 984,
+        "y": 104,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "SQL MI",
+        "x": 1028,
+        "y": 274,
+        "w": 52,
+        "h": 64
+      }
+    ]
+  },
+  "drawio_05.png": {
+    "image_size": [
+      1174,
+      450
+    ],
+    "boxes": [
+      {
+        "label": "Developer",
+        "x": 12,
+        "y": 158,
+        "w": 120,
+        "h": 60
+      },
+      {
+        "label": "Git Repo",
+        "x": 202,
+        "y": 158,
+        "w": 120,
+        "h": 60
+      },
+      {
+        "label": "CI Runner",
+        "x": 392,
+        "y": 158,
+        "w": 120,
+        "h": 60
+      },
+      {
+        "label": "Artifacts",
+        "x": 597,
+        "y": 156,
+        "w": 52,
+        "h": 64
+      },
+      {
+        "label": "Staging",
+        "x": 782,
+        "y": 158,
+        "w": 120,
+        "h": 60
+      },
+      {
+        "label": "Production",
+        "x": 992,
+        "y": 158,
+        "w": 130,
+        "h": 60
+      },
+      {
+        "label": "Monitoring",
+        "x": 992,
+        "y": 378,
+        "w": 130,
+        "h": 60
+      }
+    ]
+  },
+  "drawio_06.png": {
+    "image_size": [
+      1044,
+      624
+    ],
+    "boxes": [
+      {
+        "label": "Sensor A",
+        "x": 52,
+        "y": 72,
+        "w": 120,
+        "h": 50
+      },
+      {
+        "label": "Sensor B",
+        "x": 272,
+        "y": 72,
+        "w": 120,
+        "h": 50
+      },
+      {
+        "label": "Edge Gateway",
+        "x": 162,
+        "y": 182,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "IoT Hub",
+        "x": 162,
+        "y": 432,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Rules Engine",
+        "x": 452,
+        "y": 432,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Telemetry DB",
+        "x": 695,
+        "y": 430,
+        "w": 54,
+        "h": 64
+      },
+      {
+        "label": "Dashboard",
+        "x": 852,
+        "y": 432,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Ops Team",
+        "x": 672,
+        "y": 102,
+        "w": 140,
+        "h": 60
+      }
+    ]
+  },
+  "drawio_07.png": {
+    "image_size": [
+      1144,
+      414
+    ],
+    "boxes": [
+      {
+        "label": "Client",
+        "x": 12,
+        "y": 172,
+        "w": 130,
+        "h": 60
+      },
+      {
+        "label": "Identity Provider",
+        "x": 312,
+        "y": 62,
+        "w": 180,
+        "h": 60
+      },
+      {
+        "label": "Resource API",
+        "x": 312,
+        "y": 282,
+        "w": 180,
+        "h": 60
+      },
+      {
+        "label": "Token Cache",
+        "x": 792,
+        "y": 60,
+        "w": 52,
+        "h": 64
+      },
+      {
+        "label": "Audit Log",
+        "x": 772,
+        "y": 282,
+        "w": 150,
+        "h": 60
+      },
+      {
+        "label": "SIEM",
+        "x": 1012,
+        "y": 282,
+        "w": 120,
+        "h": 60
+      }
+    ]
+  },
+  "drawio_08.png": {
+    "image_size": [
+      1244,
+      684
+    ],
+    "boxes": [
+      {
+        "label": "Partner SFTP",
+        "x": 12,
+        "y": 167,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Cloud Storage",
+        "x": 312,
+        "y": 165,
+        "w": 54,
+        "h": 64
+      },
+      {
+        "label": "Dataflow",
+        "x": 462,
+        "y": 167,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "BigQuery",
+        "x": 682,
+        "y": 165,
+        "w": 54,
+        "h": 64
+      },
+      {
+        "label": "Looker",
+        "x": 942,
+        "y": 167,
+        "w": 140,
+        "h": 60
+      },
+      {
+        "label": "Model API",
+        "x": 312,
+        "y": 527,
+        "w": 150,
+        "h": 60
+      },
+      {
+        "label": "Feature Store",
+        "x": 562,
+        "y": 525,
+        "w": 54,
+        "h": 64
+      },
+      {
+        "label": "Vertex AI",
+        "x": 942,
+        "y": 527,
+        "w": 140,
+        "h": 60
+      }
+    ]
+  }
+}

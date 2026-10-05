@@ -179,9 +179,9 @@ dl1.download_button(
 import csv as _csv
 csv_buf = io.StringIO()
 w = _csv.writer(csv_buf)
-w.writerow(["source", "target", "line_style", "direction", "relationship"])
+w.writerow(["source", "target", "line_style", "direction", "relationship", "bidirectional"])
 for r in result.relationships:
-    w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship])
+    w.writerow([r.source, r.target, r.line_style, r.direction, r.relationship, r.bidirectional])
 dl2.download_button(
     "Download relationships.csv",
     data=csv_buf.getvalue(),

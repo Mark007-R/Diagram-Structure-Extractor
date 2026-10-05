@@ -44,6 +44,14 @@ class ArrowElement(BaseModel):
     y2: int
     direction: str = "unknown"
     line_style: str = "solid"
+    # Polyline from tail to head, including any elbow bends; (x1, y1) and
+    # (x2, y2) are its first and last points.
+    points: List[List[int]] = Field(default_factory=list)
+    # An arrowhead was found at the last point. When False (and not
+    # bidirectional) no direction was detected and the point order is arbitrary.
+    has_head: bool = False
+    # Arrowheads at both ends.
+    bidirectional: bool = False
 
 
 class IconElement(BaseModel):
@@ -64,6 +72,8 @@ class Relationship(BaseModel):
     line_style: str = "solid"
     direction: str = "unknown"
     relationship: str = "connects_to"
+    # Double-headed connector: source -> target and target -> source.
+    bidirectional: bool = False
     # Always True now: every relationship is derived from a detected arrow.
     # The field is kept so downstream consumers that read the legacy schema
     # (which mixed detected + hardcoded edges) don't break.
@@ -81,16 +91,17 @@ class PipelineConfig(BaseModel):
     icon_detector: Literal["template_matching", "clip", "hsv", "none"] = "template_matching"
     # Day-3 finding: arrow segments lying on/inside a box bbox were inflating
     # recall via the snap-to-adjacency artifact. This gate rejects them. Off by
-    # default: with directed_lines it lowers relationship F1 on both the
-    # benchmark and the real-world diagram (border segments map both endpoints
-    # to the same box and are discarded anyway).
+    # default: with directed_lines it lowers relationship F1 on the synthetic
+    # benchmark (0.993 -> 0.905) and both draw.io sets, and makes no
+    # difference on the real diagram (border segments map both endpoints to
+    # the same box and are discarded anyway).
     outside_box_gate: bool = False
-    # Day-5 arrow-mapping fix: endpoint snap radius + ray/line intersection
-    # fallback for short segments stopping in whitespace. On the synthetic
-    # benchmark the ray path never triggers (boxes are dense, nearest-box always
-    # resolves within rel_max_dist) so it is a no-op there; it is kept ON as a
-    # proven-correct general improvement for real diagrams with sparser layouts.
-    rel_max_dist: float = 160.0
+    # Endpoint snap radius + ray/line intersection fallback for ends that stop
+    # in whitespace. Connector ends are now extended to their arrowhead tips and
+    # branches are traced back to their trunk, so real ends sit at their box;
+    # a long radius mostly lets leftover border lines attach to a box. 60 px
+    # replaced 160 when the real draw.io diagram was fixed (2026-10-05).
+    rel_max_dist: float = 60.0
     rel_ray_intersection: bool = True
     rel_max_proj: float = 400.0
     graph_layout: Literal["kamada_kawai", "spring"] = "kamada_kawai"
