@@ -46,10 +46,13 @@ DPI = 120
 def derive_pixel_boxes(spec: dict, target_png: str) -> dict:
     """Re-render the spec with generate_diagrams.build_figure() and
     map each box's figure-coordinate corners into pixel coordinates of the
-    saved PNG. Verified by checking that the re-rendered figure's saved size
-    matches the on-disk PNG dimensions for this diagram.
+    saved PNG. The derived saved size is recorded next to the on-disk size;
+    y is flipped with the on-disk height, because the derived height can come
+    out 1 px taller than the PNG Agg actually writes, which put every box 1 px
+    low.
     """
     boxes = spec["boxes"]
+    on_disk = Image.open(target_png).size
     fig, ax = build_figure(spec)
 
     fig.canvas.draw()
@@ -75,8 +78,8 @@ def derive_pixel_boxes(spec: dict, target_png: str) -> dict:
         # Flip y to PIL (origin top-left)
         px_x = int(round(min(bl_x, tr_x)))
         px_x2 = int(round(max(bl_x, tr_x)))
-        px_y = int(round(saved_h - max(bl_y, tr_y)))
-        px_y2 = int(round(saved_h - min(bl_y, tr_y)))
+        px_y = int(round(on_disk[1] - max(bl_y, tr_y)))
+        px_y2 = int(round(on_disk[1] - min(bl_y, tr_y)))
         pixel_boxes.append(
             {
                 "label": label,
@@ -89,8 +92,6 @@ def derive_pixel_boxes(spec: dict, target_png: str) -> dict:
 
     plt.close(fig)
 
-    # Sanity: compare with on-disk PNG size
-    on_disk = Image.open(target_png).size
     return {
         "image_size": [saved_w, saved_h],
         "on_disk_size": [on_disk[0], on_disk[1]],
