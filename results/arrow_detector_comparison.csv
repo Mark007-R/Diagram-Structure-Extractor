@@ -1,5 +1,5 @@
-arrow_detector,outside_box_gate,full_pipeline_15,full_pipeline_synthetic_14,full_pipeline_real_1,arrow_stage_gt_boxes_14
-hough_lines,True,0.422,0.428,0.333,0.53
-hough_lines,False,0.502,0.519,0.267,0.519
-directed_lines,True,0.843,0.891,0.167,1.0
-directed_lines,False,0.946,0.992,0.308,1.0
+arrow_detector,outside_box_gate,full_pipeline_15,full_pipeline_synthetic_14,full_pipeline_real_1,arrow_stage_gt_boxes_14,full_pipeline_drawio_dev,arrow_stage_drawio_dev,full_pipeline_drawio_heldout,arrow_stage_drawio_heldout
+hough_lines,True,0.413,0.428,0.2,0.53,0.435,0.519,0.377,0.468
+hough_lines,False,0.495,0.519,0.16,0.519,0.408,0.5,0.391,0.452
+directed_lines,True,0.905,0.905,0.9,1.0,0.799,0.925,0.778,0.914
+directed_lines,False,0.993,1.0,0.9,1.0,0.828,0.925,0.789,0.914

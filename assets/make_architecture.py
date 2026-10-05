@@ -71,9 +71,9 @@ text(52, 152, "src/pipeline.py — orchestrator: each stage is wrapped so a fail
 
 # ── detectors ───────────────────────────────────────────────────────────────
 cols = [
-    (30, "Text", "PaddleOCR", "F1 0.955", "EasyOCR · Tesseract", GREEN),
+    (30, "Text", "PaddleOCR", "F1 0.962", "EasyOCR · Tesseract", GREEN),
     (265, "Boxes", "Canny + contours", "F1 1.000", "Hough · YOLOv8", GREEN),
-    (500, "Arrows", "Directed lines", "F1 0.962", "CNN · Hough · pixel scan", GREEN),
+    (500, "Arrows", "Directed lines", "F1 1.000", "CNN · Hough · pixel scan", GREEN),
     (735, "Icons", "Template match", "F1 1.000", "CLIP · HSV", GREEN),
 ]
 for x, t, champ, f1, alts, c in cols:
@@ -84,7 +84,7 @@ for x, t, champ, f1, alts, c in cols:
     text(x + 107, 255, f1)
     text(x + 107, 272, alts, f_lbl)
 
-text(607, 294, "real draw.io diagram still weak — 0.31 rel-F1", f_lbl, AMBER, anchor="mm")
+text(614, 294, "draw.io: real diagram 0.90 rel-F1 · held-out set 0.79", f_lbl, AMBER, anchor="lm")
 
 # ── graph builder ───────────────────────────────────────────────────────────
 for x in (137, 372, 607, 842):
@@ -102,7 +102,7 @@ text(490, 471, "texts · boxes · regions · arrows · icons · relationships ·
 
 box(30, 412, 190, 74)
 text(125, 434, "Benchmark", f_head, FG)
-text(125, 453, "14 synthetic + 1 real")
+text(125, 453, "14 synthetic + 1 real + 18 draw.io")
 text(125, 471, "+ ground truth JSON")
 arrow([(220, 449), (238, 449)], GREEN)
 
@@ -115,7 +115,7 @@ text(30, 522, "The reliability claim is structural: outputs are typed models, so
      f_lbl, GREEN, anchor="lm")
 text(30, 542, "The Claude Vision comparison in the README is a literature-based PROJECTION — that run had no API key",
      f_lbl, AMBER, anchor="lm")
-text(30, 562, "Docker · 35 pytest tests including a no-hardcoding AST regression",
+text(30, 562, "Docker · 73 pytest tests including a no-hardcoding AST regression",
      f_lbl, MUTED, anchor="lm")
 
 img.resize((W // S, H // S), Image.LANCZOS).save(OUT, "PNG", optimize=True)

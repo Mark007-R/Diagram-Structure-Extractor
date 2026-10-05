@@ -4,7 +4,7 @@ Wires the Day-3 Phase-2 champions into one configurable, data-driven pipeline:
 
     text  -> PaddleOCR         (champion: F1 0.962)
     box   -> Canny + contours  (champion: F1 1.000)
-    arrow -> directed lines    (champion: F1 0.990; any-angle Hough, arrowhead-oriented)
+    arrow -> directed lines    (champion: F1 1.000; any-angle Hough, arrowhead-oriented)
     icon  -> template matching (champion: F1 1.000 on curated library)
 
 (F1 from results/phase2_leaderboard.csv.)
