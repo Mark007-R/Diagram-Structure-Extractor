@@ -7,9 +7,9 @@ Stages (cumulative):
     A: text only           — components scored by OCR fragments alone (no box grouping)
     B: text + box          — boxes labeled from contained text; components = boxes
     C: text + box + arrow  — relationships built but no outside-box gate
-    D: + outside_box_gate  — Day-3 gate (drops box-border arrow segments)
-    E: + ray-intersection  — Day-5 arrow-mapping fix (extends mapping radius)
-    F: + icon              — full pipeline
+    D: + ray-intersection  — Day-5 arrow-mapping fix (extends mapping radius)
+    E: + outside_box_gate  — Day-3 gate (drops box-border arrow segments); opt-in
+    F: + icon              — full pipeline as shipped (gate off)
 
 For each stage we record components / relationships / icons macro-F1 and the
 delta vs the prior stage. Schema-valid JSON rate is 1.0 throughout (the typed
@@ -126,7 +126,7 @@ def _detect_raw(image_path: str):
     """Run all detectors once; the ablation reuses the same raw outputs."""
     from src.text_detection import easyocr_detector as td
     from src.box_detection import canny_contours_detector as bd
-    from src.arrow_detection import hough_lines_detector as ad
+    from src.arrow_detection import directed_lines_detector as ad
     from src.icon_detection import template_detector as icd
 
     t = td.detect(image_path)["texts"]
@@ -147,7 +147,7 @@ def _icons_to_labels(icons: List[Dict]) -> List[str]:
 
 def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
     stage_names = ["A_text", "B_text_box", "C_text_box_arrow",
-                   "D_plus_outside_box_gate", "E_plus_ray_intersection",
+                   "D_plus_ray_intersection", "E_plus_outside_box_gate",
                    "F_full_pipeline"]
     per_stage = {s: {"per_diagram": {}, "schema_valid": 0, "n": 0} for s in stage_names}
 
@@ -203,13 +203,13 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
 
-        # Stage D — + outside_box_gate (Day-3 fix).
+        # Stage D — + ray-intersection (Day-5 fix).
         rels_d = builder.build_relationships(
             arrows, labelled_boxes,
-            outside_box_gate=True, max_dist=160.0,
-            ray_intersection=False, max_proj=400.0,
+            outside_box_gate=False, max_dist=160.0,
+            ray_intersection=True, max_proj=400.0,
         )
-        per_stage["D_plus_outside_box_gate"]["per_diagram"][name] = {
+        per_stage["D_plus_ray_intersection"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
                 [(r["source"], r["target"]) for r in rels_d], gt_arrows),
@@ -217,13 +217,13 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
 
-        # Stage E — + ray-intersection (Day-5 fix).
+        # Stage E — + outside_box_gate (Day-3 fix; opt-in, off by default).
         rels_e = builder.build_relationships(
             arrows, labelled_boxes,
             outside_box_gate=True, max_dist=160.0,
             ray_intersection=True, max_proj=400.0,
         )
-        per_stage["E_plus_ray_intersection"]["per_diagram"][name] = {
+        per_stage["E_plus_outside_box_gate"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
                 [(r["source"], r["target"]) for r in rels_e], gt_arrows),
@@ -231,11 +231,11 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
 
-        # Stage F — full pipeline (adds icons).
+        # Stage F — full pipeline as shipped (gate off, adds icons).
         per_stage["F_full_pipeline"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
-                [(r["source"], r["target"]) for r in rels_e], gt_arrows),
+                [(r["source"], r["target"]) for r in rels_d], gt_arrows),
             "icons": _score_icons(_icons_to_labels(icons), gt_icons),
         }
 

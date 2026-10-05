@@ -56,6 +56,20 @@ def test_extract_annotated_png_is_valid_image(test_image: str):
     assert png_bytes[:8] == b"\x89PNG\r\n\x1a\n", "Returned PNG header is invalid."
 
 
+def test_extract_with_every_stage_set_to_none(test_image: str):
+    """Selecting "none" skips a stage: it contributes nothing, records no error,
+    and the response is still schema-valid."""
+    c = _client()
+    with open(test_image, "rb") as f:
+        files = {"file": ("diagram_01.png", f.read(), "image/png")}
+    r = c.post("/extract?text=none&box=none&arrow=none&icon=none", files=files)
+    assert r.status_code == 200, r.text
+    s = r.json()["structure"]
+    for k in ("texts", "boxes", "regions", "arrows", "icons", "relationships"):
+        assert s[k] == [], k
+    assert s["detectors"]["errors"] == {}
+
+
 def test_extract_relationships_all_detected_true(test_image: str):
     """Every relationship returned by the API must be marked detected=True —
     no hardcoded edges leak into the API surface."""

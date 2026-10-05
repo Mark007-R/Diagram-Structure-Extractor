@@ -76,19 +76,23 @@ st.caption(
 
 # ── Sidebar config ───────────────────────────────────────────────────────────
 st.sidebar.header("Pipeline configuration")
-text_detector = st.sidebar.selectbox("Text detector", ["easyocr", "paddleocr"], index=0)
-box_detector = st.sidebar.selectbox("Box detector", ["canny_contours", "hough", "yolo"], index=0)
-arrow_detector = st.sidebar.selectbox("Arrow detector", ["hough_lines", "pixel_scan", "cnn"], index=0)
-icon_detector = st.sidebar.selectbox("Icon detector", ["template_matching", "clip", "hsv"], index=0)
+# "none" skips that stage entirely; it contributes an empty list to the result.
+text_detector = st.sidebar.selectbox("Text detector", ["easyocr", "paddleocr", "none"], index=0)
+box_detector = st.sidebar.selectbox("Box detector", ["canny_contours", "hough", "yolo", "none"], index=0)
+arrow_detector = st.sidebar.selectbox(
+    "Arrow detector", ["directed_lines", "hough_lines", "pixel_scan", "cnn", "none"], index=0)
+icon_detector = st.sidebar.selectbox("Icon detector", ["template_matching", "clip", "hsv", "none"], index=0)
 outside_box_gate = st.sidebar.checkbox(
-    "Outside-box gate (Day-3 fix)", value=True,
+    "Outside-box gate (Day-3 fix)", value=False,
     help="Rejects arrow segments whose midpoint sits inside a box (border artifacts). "
-         "Lifts real-diagram rel-F1 0.545→0.889. Costs ~0.077 on clean synthetic diagrams.",
+         "Calibrated for hough_lines; off by default because with directed_lines "
+         "it costs ~0.055 rel-F1.",
 )
 graph_layout = st.sidebar.selectbox("Graph layout", ["kamada_kawai", "spring"], index=0)
 st.sidebar.markdown(
     "**Champion config (defaults)** — picked by Day-3 Phase-2 leaderboard, "
-    "tuned Day-5. EasyOCR + Canny+contours + Hough lines + template-matching."
+    "tuned Day-5. EasyOCR + Canny+contours + directed lines + template-matching. "
+    "Pick **none** to skip a stage."
 )
 
 # ── Upload ───────────────────────────────────────────────────────────────────

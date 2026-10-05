@@ -55,9 +55,9 @@ async def extract(
     file: UploadFile = File(...),
     text: str = Query("easyocr"),
     box: str = Query("canny_contours"),
-    arrow: str = Query("hough_lines"),
+    arrow: str = Query("directed_lines"),
     icon: str = Query("template_matching"),
-    outside_box_gate: bool = Query(True),
+    outside_box_gate: bool = Query(False),
 ) -> JSONResponse:
     config = PipelineConfig(
         text_detector=text, box_detector=box, arrow_detector=arrow,

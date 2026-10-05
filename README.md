@@ -29,22 +29,36 @@ Each stage was chosen by benchmark, not preference:
 | Arrows | CNN-verified Hough | 0.581 | 0.346 | **0.434** | pixel scan, plain Hough |
 | Icons | Template matching | 1.000 | 1.000 | **1.000** | CLIP, HSV |
 
-**Arrow detection is the pipeline's weak stage** — recall 0.346 means it misses roughly two arrows in three. Relationship quality is capped by it. Source: [`results/phase2_leaderboard.csv`](results/phase2_leaderboard.csv)
+This bake-off predates the `directed_lines` arrow detector, which now replaces it as the default (below). Source: [`results/phase2_leaderboard.csv`](results/phase2_leaderboard.csv)
 
-### Stage ablation — and the gate that costs accuracy
+### Arrows: the directed-lines detector
+
+The Hough champion above dropped every diagonal segment, never decided which end was the arrowhead (so about half the edges came out reversed), and fused a row of chained arrows A → B → C into one A → C line. `src/arrow_detection/directed_lines_detector.py` fixes all three: any-angle Hough with dash-gap bridging, a collinear merge, a split wherever an arrowhead sits mid-line, and orientation from the end that carries the solid arrowhead.
+
+Each column is that detector with its own default gate setting (old: gate on, new: gate off).
+
+| Relationships macro-F1 | Hough lines (old) | Directed lines (new) |
+|---|---:|---:|
+| Full pipeline, 15 diagrams | 0.220 | **0.636** |
+| Arrow stage alone (ground-truth boxes, 14 diagrams) | 0.389 | **0.950** |
+| `search_interview_test.png` (the one real-world diagram) | **0.333** | 0.308 |
+
+The second row feeds hand-labelled boxes to the graph builder, isolating the arrow stage from OCR and box errors; most remaining full-pipeline misses are OCR misreads ("Mesrage Broker") and merged boxes, not arrows. **The real-world diagram is still slightly worse:** both detectors find the same 2 of its 8 edges, and the new one adds a third false positive. It is a draw.io export with thin open arrowheads that the solid-ink orientation check cannot see, and its connectors run through nested containers the box stage reports as boxes.
+
+### Stage ablation — and the gate that no longer earns its place
 
 | Stage | Components F1 | Relationships F1 | Schema-valid | Δ relationships |
 |---|---:|---:|---:|---:|
 | A — text only | 0.875 | 0.000 | 1.000 | — |
 | B — + boxes | 0.863 | 0.000 | 1.000 | 0.000 |
-| C — + arrows | 0.863 | **0.297** | 1.000 | **+0.297** |
-| D — + outside-box gate | 0.863 | 0.220 | 1.000 | **−0.077** |
-| E — + ray intersection | 0.863 | 0.220 | 1.000 | 0.000 |
-| F — full pipeline | 0.863 | 0.220 | 1.000 | 0.000 |
+| C — + arrows | 0.863 | **0.636** | 1.000 | **+0.636** |
+| D — + ray intersection | 0.863 | 0.636 | 1.000 | 0.000 |
+| E — + outside-box gate (opt-in) | 0.863 | 0.581 | 1.000 | **−0.055** |
+| F — full pipeline (gate off) | 0.863 | 0.636 | 1.000 | +0.055 |
 
 Two things worth stating plainly:
 
-- **The outside-box gate costs −0.077 relationship F1 on this benchmark.** It is calibrated for noisy real-world Hough output, and these 15 diagrams are mostly clean renders. It is kept because it helps on real diagrams, but it hurts here and the ablation says so.
+- **The outside-box gate is now off by default.** It was calibrated for the old Hough detector's box-border artifacts. With the directed-lines detector it costs −0.055 relationship F1 on this benchmark and drops the real-world diagram from 0.308 to 0.167. Border segments map both endpoints to the same box and are discarded without it. It stays available as `outside_box_gate=true` / `--gate`.
 - **Schema validity is 1.000 at every single stage.** That is the property the design is actually optimising for, and it never moves.
 
 Source: [`results/ablation.csv`](results/ablation.csv)
@@ -71,7 +85,7 @@ Source: [`results/frontier_comparison.csv`](results/frontier_comparison.csv)
 
 1. **Upload** a PNG, JPG or WebP through the CLI, the FastAPI endpoint or the Streamlit demo.
 2. **`src/pipeline.py`** selects detectors from a `PipelineConfig` and wraps each stage so failure degrades to an empty list — this is what guarantees schema-valid output.
-3. **Four detectors run**: EasyOCR for text, Canny + contours for boxes, Hough with an outside-box gate for arrows, template matching for icons.
+3. **Four detectors run**: EasyOCR for text, Canny + contours for boxes, directed lines for arrows, template matching for icons. Any stage can be set to `none` to skip it.
 4. **`src/graph/builder.py`** labels boxes with their text and derives relationships from geometry — there are no hardcoded edges, and a pytest AST regression fails the build if any reappear.
 5. **Emit** a typed `ExtractionResult`, plus an annotated PNG, a `networkx` graph render and a flat edge CSV.
 
@@ -81,7 +95,7 @@ Source: [`results/frontier_comparison.csv`](results/frontier_comparison.csv)
 |---|---|
 | Text | EasyOCR (champion) · PaddleOCR · Tesseract (optional native binary) |
 | Boxes | OpenCV Canny + contours · Hough · YOLOv8 |
-| Arrows | Hough lines + thinning + outside-box gate · CNN verifier |
+| Arrows | directed lines (any-angle Hough + arrowhead orientation) · Hough lines + thinning · CNN verifier |
 | Icons | template matching · CLIP · HSV |
 | Graph | networkx (kamada-kawai layout) |
 | Schema | Pydantic v2 |
@@ -133,7 +147,7 @@ Tesseract is wired in as an optional text detector but needs the native binary i
 
 `POST /extract` (multipart, `file=@image.png`)
 
-Optional query params: `?text=paddleocr&box=canny_contours&arrow=hough_lines&icon=template_matching&outside_box_gate=true`.
+Optional query params: `?text=paddleocr&box=canny_contours&arrow=directed_lines&icon=template_matching&outside_box_gate=false`. Any detector can be `none` to skip that stage.
 
 ```json
 {

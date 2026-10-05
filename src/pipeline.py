@@ -4,18 +4,18 @@ Wires the Day-3 Phase-2 champions into one configurable, data-driven pipeline:
 
     text  -> EasyOCR           (champion: F1 0.949)
     box   -> Canny + contours  (champion: F1 0.808)
-    arrow -> Hough + thinning  (champion: honest F1 0.364, + outside-box gate)
+    arrow -> directed lines    (any-angle Hough, arrowhead-oriented)
     icon  -> template matching (champion: F1 1.000 on curated library)
 
-Each stage is selectable via `PipelineConfig`. Every stage is wrapped so that a
-failure degrades to an empty result rather than a crash — that is what keeps the
+Each stage is selectable via `PipelineConfig`, and "none" skips it. Every stage
+is wrapped so that a failure degrades to an empty result rather than a crash — that is what keeps the
 final `ExtractionResult` schema-valid 100% of the time (the reliability metric
 DiagraMine beats Claude Vision on).
 
 Usage:
     python -m src.pipeline <image_path> [--out DIR] [--text easyocr]
-                           [--box canny_contours] [--arrow hough_lines]
-                           [--icon template_matching] [--no-gate]
+                           [--box canny_contours] [--arrow directed_lines]
+                           [--icon template_matching] [--gate]
 """
 from __future__ import annotations
 
@@ -47,7 +47,14 @@ from src.schemas import (
 # every `import pipeline`. Resolve them lazily so callers only pay for the
 # detectors they actually select.
 
+def _skip(image_path: str) -> dict:
+    """The "none" detector: a skipped stage yields no items (see `_safe`)."""
+    return {}
+
+
 def _text_detect(name: str) -> Callable[[str], dict]:
+    if name == "none":
+        return _skip
     if name == "easyocr":
         from src.text_detection import easyocr_detector as m
     elif name == "paddleocr":
@@ -60,6 +67,8 @@ def _text_detect(name: str) -> Callable[[str], dict]:
 
 
 def _box_detect(name: str) -> Callable[[str], dict]:
+    if name == "none":
+        return _skip
     if name == "canny_contours":
         from src.box_detection import canny_contours_detector as m
     elif name == "hough":
@@ -72,7 +81,11 @@ def _box_detect(name: str) -> Callable[[str], dict]:
 
 
 def _arrow_detect(name: str) -> Callable[[str], dict]:
-    if name == "hough_lines":
+    if name == "none":
+        return _skip
+    if name == "directed_lines":
+        from src.arrow_detection import directed_lines_detector as m
+    elif name == "hough_lines":
         from src.arrow_detection import hough_lines_detector as m
     elif name == "pixel_scan":
         from src.arrow_detection import pixel_scan_detector as m
@@ -84,6 +97,8 @@ def _arrow_detect(name: str) -> Callable[[str], dict]:
 
 
 def _icon_detect(name: str) -> Callable[[str], dict]:
+    if name == "none":
+        return _skip
     if name == "template_matching":
         from src.icon_detection import template_detector as m
     elif name == "clip":
@@ -234,7 +249,7 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         box_detector=args.box,
         arrow_detector=args.arrow,
         icon_detector=args.icon,
-        outside_box_gate=not args.no_gate,
+        outside_box_gate=args.gate,
         graph_layout=args.layout,
     )
 
@@ -243,11 +258,12 @@ def main() -> None:
     p = argparse.ArgumentParser(description="DiagraMine modular extraction pipeline")
     p.add_argument("image", help="path to the diagram image")
     p.add_argument("--out", default=".", help="output directory")
-    p.add_argument("--text", default="easyocr", choices=["easyocr", "paddleocr", "tesseract"])
-    p.add_argument("--box", default="canny_contours", choices=["canny_contours", "hough", "yolo"])
-    p.add_argument("--arrow", default="hough_lines", choices=["hough_lines", "pixel_scan", "cnn"])
-    p.add_argument("--icon", default="template_matching", choices=["template_matching", "clip", "hsv"])
-    p.add_argument("--no-gate", action="store_true", help="disable the outside-box arrow gate")
+    p.add_argument("--text", default="easyocr", choices=["easyocr", "paddleocr", "tesseract", "none"])
+    p.add_argument("--box", default="canny_contours", choices=["canny_contours", "hough", "yolo", "none"])
+    p.add_argument("--arrow", default="directed_lines",
+                   choices=["directed_lines", "hough_lines", "pixel_scan", "cnn", "none"])
+    p.add_argument("--icon", default="template_matching", choices=["template_matching", "clip", "hsv", "none"])
+    p.add_argument("--gate", action="store_true", help="enable the outside-box arrow gate (off by default)")
     p.add_argument("--layout", default="kamada_kawai", choices=["kamada_kawai", "spring"])
     args = p.parse_args()
 
