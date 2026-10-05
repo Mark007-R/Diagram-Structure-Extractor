@@ -124,7 +124,7 @@ def _score_icons(det: List[str], gt: List[str]) -> Dict:
 
 def _detect_raw(image_path: str):
     """Run all detectors once; the ablation reuses the same raw outputs."""
-    from src.text_detection import easyocr_detector as td
+    from src.text_detection import paddle_detector as td
     from src.box_detection import canny_contours_detector as bd
     from src.arrow_detection import directed_lines_detector as ad
     from src.icon_detection import template_detector as icd

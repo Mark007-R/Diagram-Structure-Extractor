@@ -71,7 +71,7 @@ text(52, 152, "src/pipeline.py — orchestrator: each stage is wrapped so a fail
 
 # ── detectors ───────────────────────────────────────────────────────────────
 cols = [
-    (30, "Text", "EasyOCR", "F1 0.943", "PaddleOCR (0.955) · Tesseract", GREEN),
+    (30, "Text", "PaddleOCR", "F1 0.955", "EasyOCR · Tesseract", GREEN),
     (265, "Boxes", "Canny + contours", "F1 1.000", "Hough · YOLOv8", GREEN),
     (500, "Arrows", "Directed lines", "F1 0.962", "CNN · Hough · pixel scan", GREEN),
     (735, "Icons", "Template match", "F1 1.000", "CLIP · HSV", GREEN),
@@ -115,7 +115,7 @@ text(30, 522, "The reliability claim is structural: outputs are typed models, so
      f_lbl, GREEN, anchor="lm")
 text(30, 542, "The Claude Vision comparison in the README is a literature-based PROJECTION — that run had no API key",
      f_lbl, AMBER, anchor="lm")
-text(30, 562, "Docker · 29 pytest tests including a no-hardcoding AST regression",
+text(30, 562, "Docker · 35 pytest tests including a no-hardcoding AST regression",
      f_lbl, MUTED, anchor="lm")
 
 img.resize((W // S, H // S), Image.LANCZOS).save(OUT, "PNG", optimize=True)
