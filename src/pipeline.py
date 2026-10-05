@@ -2,10 +2,12 @@
 
 Wires the Day-3 Phase-2 champions into one configurable, data-driven pipeline:
 
-    text  -> EasyOCR           (champion: F1 0.949)
-    box   -> Canny + contours  (champion: F1 0.808)
-    arrow -> directed lines    (any-angle Hough, arrowhead-oriented)
+    text  -> EasyOCR           (F1 0.943; PaddleOCR 0.955 is the bake-off champion)
+    box   -> Canny + contours  (champion: F1 1.000)
+    arrow -> directed lines    (champion: F1 0.962; any-angle Hough, arrowhead-oriented)
     icon  -> template matching (champion: F1 1.000 on curated library)
+
+(F1 from results/phase2_leaderboard.csv.)
 
 Each stage is selectable via `PipelineConfig`, and "none" skips it. Every stage
 is wrapped so that a failure degrades to an empty result rather than a crash — that is what keeps the

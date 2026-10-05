@@ -86,13 +86,13 @@ outside_box_gate = st.sidebar.checkbox(
     "Outside-box gate (Day-3 fix)", value=False,
     help="Rejects arrow segments whose midpoint sits inside a box (border artifacts). "
          "Calibrated for hough_lines; off by default because with directed_lines "
-         "it costs ~0.055 rel-F1.",
+         "it costs ~0.08 rel-F1.",
 )
 graph_layout = st.sidebar.selectbox("Graph layout", ["kamada_kawai", "spring"], index=0)
 st.sidebar.markdown(
-    "**Champion config (defaults)** — picked by Day-3 Phase-2 leaderboard, "
-    "tuned Day-5. EasyOCR + Canny+contours + directed lines + template-matching. "
-    "Pick **none** to skip a stage."
+    "**Default config** — EasyOCR + Canny+contours + directed lines + template-matching. "
+    "Box, arrow and icon defaults are the Phase-2 leaderboard champions; PaddleOCR edges "
+    "EasyOCR on text (0.955 vs 0.943 F1). Pick **none** to skip a stage."
 )
 
 # ── Upload ───────────────────────────────────────────────────────────────────
