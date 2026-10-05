@@ -39,6 +39,8 @@ from src import pipeline as pl
 from src.graph import builder
 from src.schemas import PipelineConfig
 
+CFG = PipelineConfig()  # shipped defaults (snap radius etc.)
+
 EVAL_DIR = os.path.join(ROOT, "data", "eval")
 DIAGRAMS_DIR = os.path.join(EVAL_DIR, "diagrams_15")
 GROUND_TRUTH_PATH = os.path.join(EVAL_DIR, "ground_truth.json")
@@ -92,19 +94,32 @@ def _score_components(detected: List[str], gt: List[str]) -> Dict:
             "tp": tp, "fp": fp, "fn": fn}
 
 
-def _score_relationships(det_pairs: List[Tuple[str, str]], gt_arrows: List[Dict]) -> Dict:
-    gt_pairs = [(a.get("source", ""), a.get("target", "")) for a in gt_arrows]
+def _score_relationships(det_pairs: List[Tuple], gt_arrows: List[Dict]) -> Dict:
+    """Directed one-to-one matching of (source, target[, bidirectional])
+    pairs. A double-headed edge -- detected or in the answer key -- counts as
+    two directed edges, A -> B and B -> A: finding only one of its heads costs
+    a false negative, and a head drawn where the key has none costs a false
+    positive."""
+    def directed(items):
+        out = []
+        for s, t, bid in items:
+            out.append((s, t))
+            if bid:
+                out.append((t, s))
+        return out
+
+    det_edges = directed((d[0], d[1], bool(d[2]) if len(d) > 2 else False) for d in det_pairs)
+    gt_pairs = directed((a.get("source", ""), a.get("target", ""), bool(a.get("bidirectional")))
+                        for a in gt_arrows)
     used = set()
     tp = 0
-    for (ds, dt) in det_pairs:
+    for ds, dt in det_edges:
         for j, (gs, gt_lbl) in enumerate(gt_pairs):
-            if j in used:
-                continue
-            if _match(ds, gs) and _match(dt, gt_lbl):
+            if j not in used and _match(ds, gs) and _match(dt, gt_lbl):
                 used.add(j)
                 tp += 1
                 break
-    fp = max(len(det_pairs) - tp, 0)
+    fp = max(len(det_edges) - tp, 0)
     fn = len(gt_pairs) - tp
     p, r, f1 = _prf(tp, fp, fn)
     return {"precision": round(p, 3), "recall": round(r, 3), "f1": round(f1, 3),
@@ -124,13 +139,15 @@ def _score_icons(det: List[str], gt: List[str]) -> Dict:
 
 def _detect_raw(image_path: str):
     """Run all detectors once; the ablation reuses the same raw outputs."""
+    import cv2
     from src.text_detection import paddle_detector as td
-    from src.box_detection import canny_contours_detector as bd
+    from src.box_detection import canny_contours_detector as bd, icon_nodes
     from src.arrow_detection import directed_lines_detector as ad
     from src.icon_detection import template_detector as icd
 
     t = td.detect(image_path)["texts"]
     b = bd.detect(image_path)["boxes"]
+    b = b + icon_nodes.find(cv2.imread(image_path), t, b)   # part of the shipped box stage
     a = ad.detect(image_path)["arrows"]
     ic = icd.detect(image_path)["icons"]
     return t, b, a, ic
@@ -192,13 +209,13 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
         # Stage C — text + box + arrow (no gate, no ray fallback).
         rels_c = builder.build_relationships(
             arrows, labelled_boxes,
-            outside_box_gate=False, max_dist=160.0,
+            outside_box_gate=False, max_dist=CFG.rel_max_dist,
             ray_intersection=False, max_proj=400.0,
         )
         per_stage["C_text_box_arrow"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
-                [(r["source"], r["target"]) for r in rels_c], gt_arrows),
+                [(r["source"], r["target"], r.get("bidirectional", False)) for r in rels_c], gt_arrows),
             "icons": {"precision": 0.0, "recall": 0.0, "f1": 0.0,
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
@@ -206,13 +223,13 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
         # Stage D — + ray-intersection (Day-5 fix).
         rels_d = builder.build_relationships(
             arrows, labelled_boxes,
-            outside_box_gate=False, max_dist=160.0,
+            outside_box_gate=False, max_dist=CFG.rel_max_dist,
             ray_intersection=True, max_proj=400.0,
         )
         per_stage["D_plus_ray_intersection"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
-                [(r["source"], r["target"]) for r in rels_d], gt_arrows),
+                [(r["source"], r["target"], r.get("bidirectional", False)) for r in rels_d], gt_arrows),
             "icons": {"precision": 0.0, "recall": 0.0, "f1": 0.0,
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
@@ -220,13 +237,13 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
         # Stage E — + outside_box_gate (Day-3 fix; opt-in, off by default).
         rels_e = builder.build_relationships(
             arrows, labelled_boxes,
-            outside_box_gate=True, max_dist=160.0,
+            outside_box_gate=True, max_dist=CFG.rel_max_dist,
             ray_intersection=True, max_proj=400.0,
         )
         per_stage["E_plus_outside_box_gate"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
-                [(r["source"], r["target"]) for r in rels_e], gt_arrows),
+                [(r["source"], r["target"], r.get("bidirectional", False)) for r in rels_e], gt_arrows),
             "icons": {"precision": 0.0, "recall": 0.0, "f1": 0.0,
                       "tp": 0, "fp": 0, "fn": len(gt_icons)},
         }
@@ -235,7 +252,7 @@ def run_ablation(diagrams: List[str], ground_truth: Dict) -> Dict:
         per_stage["F_full_pipeline"]["per_diagram"][name] = {
             "components": _score_components(comp_box, gt_components),
             "relationships": _score_relationships(
-                [(r["source"], r["target"]) for r in rels_d], gt_arrows),
+                [(r["source"], r["target"], r.get("bidirectional", False)) for r in rels_d], gt_arrows),
             "icons": _score_icons(_icons_to_labels(icons), gt_icons),
         }
 
