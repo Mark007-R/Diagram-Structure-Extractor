@@ -1,13 +1,14 @@
 """Directed-lines arrow detector (any angle, arrowhead-oriented).
 
-The Hough-lines detector this replaces lost most relationships for three
-reasons, each visible on the 15-diagram benchmark:
+The Hough-lines detector this replaces has three gaps:
 
-  * it dropped every diagonal segment, but most connectors in real diagrams
-    run diagonally between boxes;
-  * it never decided which end is the arrowhead, so `(x1, y1) -> (x2, y2)`
-    was just Hough's endpoint order and about half the edges came out reversed;
-  * a row of chained arrows A -> B -> C merged into one A -> C line.
+  * it drops every diagonal segment, but many connectors run diagonally
+    between boxes;
+  * it never looks for the arrowhead: every line is reported left to right or
+    top to bottom, which is only right when the arrow happens to point that
+    way (true of every axis-aligned arrow in the synthetic benchmark);
+  * on the original (centre-to-centre) benchmark renders, a row of chained
+    arrows A -> B -> C merged into one A -> C line.
 
 Pipeline:
   1. Threshold, then `cv2.HoughLinesP` at all angles. `maxLineGap` bridges

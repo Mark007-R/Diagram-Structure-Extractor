@@ -71,8 +71,10 @@ class Relationship(BaseModel):
 
 
 class PipelineConfig(BaseModel):
-    """Selects which detector runs at each stage. Defaults are the leaderboard
-    champions; "none" skips a stage, which then contributes an empty list."""
+    """Selects which detector runs at each stage. Box, arrow and icon defaults
+    are the leaderboard champions; text defaults to EasyOCR although PaddleOCR
+    is the bake-off champion. "none" skips a stage, which then contributes an
+    empty list."""
     model_config = ConfigDict(extra="forbid")
     text_detector: Literal["easyocr", "paddleocr", "tesseract", "none"] = "easyocr"
     box_detector: Literal["canny_contours", "hough", "yolo", "none"] = "canny_contours"

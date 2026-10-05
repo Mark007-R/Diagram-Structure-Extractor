@@ -49,6 +49,12 @@ _PROCESSOR = None
 _TEXT_EMBEDS = None
 
 
+def _embedding(out) -> torch.Tensor:
+    """transformers < 5 returns the projected embedding as a tensor; 5.x wraps
+    it in a BaseModelOutputWithPooling, as `pooler_output`."""
+    return out if isinstance(out, torch.Tensor) else out.pooler_output
+
+
 def _load():
     global _MODEL, _PROCESSOR, _TEXT_EMBEDS
     if _MODEL is not None:
@@ -58,7 +64,7 @@ def _load():
     _MODEL = CLIPModel.from_pretrained(_MODEL_NAME).eval()
     with torch.no_grad():
         inputs = _PROCESSOR(text=_VOCAB, return_tensors="pt", padding=True)
-        text_emb = _MODEL.get_text_features(**inputs)
+        text_emb = _embedding(_MODEL.get_text_features(**inputs))
         text_emb = text_emb / text_emb.norm(dim=-1, keepdim=True)
         _TEXT_EMBEDS = text_emb
 
@@ -89,7 +95,7 @@ def detect(image_path: str) -> dict:
     icons: List[dict] = []
     with torch.no_grad():
         inputs = _PROCESSOR(images=crops_pil, return_tensors="pt")
-        img_emb = _MODEL.get_image_features(**inputs)
+        img_emb = _embedding(_MODEL.get_image_features(**inputs))
         img_emb = img_emb / img_emb.norm(dim=-1, keepdim=True)
         sims = (img_emb @ _TEXT_EMBEDS.T).numpy()   # [n_crops, vocab]
 
