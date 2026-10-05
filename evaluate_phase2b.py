@@ -1,14 +1,16 @@
 """Phase 2b benchmark harness — Day 3 of the DiagraMine sprint.
 
-Runs every arrow detector (pixel_scan, hough_lines, cnn) and every icon
-detector (HSV, template, CLIP) against the 15-diagram benchmark.
+Runs every arrow detector (directed_lines, pixel_scan, hough_lines, cnn) and
+every icon detector (HSV, template, CLIP) against the 15-diagram benchmark.
 
 Arrow scoring:
-  Each detected arrow's two endpoints are snapped to the nearest GT box
-  (using `ground_truth_boxes.json`). The resulting (src_label, tgt_label)
-  is treated as an UNORDERED pair (none of these detectors recover direction).
-  We bipartite-match unique (src, tgt) pairs to GT arrows in `ground_truth.json`,
-  taking each detected pair at most once. TP / FP / FN follow.
+  Each detected arrow's two endpoints are snapped to the GT box whose border
+  is nearest, within 25 px (using `ground_truth_boxes.json`). The resulting
+  (src_label, tgt_label) is treated as an UNORDERED pair (only directed_lines
+  recovers direction, so direction is not scored here; benchmark_ablation.py
+  and benchmark_arrow_detectors.py score it). Detected pairs are bipartite-
+  matched to GT arrows in `ground_truth.json`; a pair reported more than once
+  counts as one TP plus FPs. TP / FP / FN follow, pooled over the diagrams.
 
   For `search_interview_test.png` we do NOT have machine-readable GT boxes
   (it's the original test image), so arrow scoring is skipped on that diagram.
@@ -27,7 +29,7 @@ Outputs:
   results/phase2b_per_diagram.csv    (per-detector per-diagram)
   results/phase2b_detail.json        (raw matches)
   results/phase2b_schema_validity.json  (per-detector schema-valid output rate)
-  results/phase2_leaderboard.csv     (combined champion picks: text + box + arrow + icon)
+  (results/phase2_leaderboard.csv is built from these by results/_build_leaderboard.py)
   results/samples/arrow/<detector>__<diagram>.png   (annotated overlays)
   results/samples/icon/<detector>__<diagram>.png
 """
@@ -46,7 +48,9 @@ from rapidfuzz import fuzz
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
-from src.arrow_detection import pixel_scan_detector, hough_lines_detector, cnn_detector
+from src.arrow_detection import (
+    cnn_detector, directed_lines_detector, hough_lines_detector, pixel_scan_detector,
+)
 from src.icon_detection import hsv_detector, template_detector, clip_detector
 
 DIAGRAMS_DIR = os.path.join(ROOT, "data", "eval", "diagrams_15")
@@ -64,6 +68,7 @@ with open(GT_BOXES_PATH, encoding="utf-8") as f:
     GT_BOXES = json.load(f)
 
 ARROW_DETECTORS = {
+    "directed_lines": directed_lines_detector,
     "pixel_scan": pixel_scan_detector,
     "hough_lines": hough_lines_detector,
     "cnn_verified": cnn_detector,
@@ -89,24 +94,22 @@ SAMPLE_DIAGRAMS = [
 # ---------------------------------------------------------------------------
 
 def _nearest_box(point: Tuple[int, int], gt_boxes: List[dict],
-                 max_dist: int = 60) -> str | None:
-    """Return the label of the GT box whose centre is closest to `point`,
-    within `max_dist`; else None. Endpoints often sit ON the border of the
-    target box, so we test against the box rect first (point-in-rect with a
-    margin) before falling back to centre-distance."""
+                 max_dist: int = 25) -> str | None:
+    """Return the label of the GT box whose border is closest to `point`
+    (0 inside the box), within `max_dist`; else None.
+
+    Arrows end at box borders, but a detected line usually stops at the base
+    of the arrowhead, short of the border, so `max_dist` allows about one
+    arrowhead length. (This used to fall back to distance from the box
+    centre, which only worked while the benchmark arrows stopped about 30 px
+    from the box centres, inside the box.)"""
     x, y = point
-    # Point-in-rect with 5 px margin
+    best, best_d = None, float(max_dist)
     for b in gt_boxes:
-        if (b["x"] - 5 <= x <= b["x"] + b["w"] + 5 and
-            b["y"] - 5 <= y <= b["y"] + b["h"] + 5):
-            return b["label"]
-    # Otherwise nearest centre within max_dist
-    best, best_d = None, max_dist * max_dist + 1
-    for b in gt_boxes:
-        cx = b["x"] + b["w"] / 2
-        cy = b["y"] + b["h"] / 2
-        d = (cx - x) ** 2 + (cy - y) ** 2
-        if d < best_d:
+        dx = max(b["x"] - x, 0, x - (b["x"] + b["w"]))
+        dy = max(b["y"] - y, 0, y - (b["y"] + b["h"]))
+        d = (dx * dx + dy * dy) ** 0.5
+        if d <= best_d:
             best_d = d
             best = b["label"]
     return best
