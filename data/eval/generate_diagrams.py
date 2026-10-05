@@ -43,14 +43,36 @@ def _box_center(box: Box) -> Tuple[float, float]:
     return x + w / 2, y + h / 2
 
 
+def _exit_fraction(box: Box, dx: float, dy: float) -> float:
+    """Fraction of the centre-to-centre vector (dx, dy) at which a ray from
+    this box's centre crosses the box's border."""
+    _, _, w, h, _ = box
+    fx = (w / 2) / abs(dx) if dx else float("inf")
+    fy = (h / 2) / abs(dy) if dy else float("inf")
+    return min(fx, fy)
+
+
 def _box_edge(src: Box, tgt: Box) -> Tuple[Tuple[float, float], Tuple[float, float]]:
-    """Compute arrow start/end on the boundary between two box centres."""
+    """Compute arrow start/end on the box borders along the line between the
+    two box centres, so connectors run through whitespace and never cross
+    a label (arrows used to be aimed centre to centre with an 18 pt shrink,
+    so the near-horizontal ones ran through the labels)."""
     sx, sy = _box_center(src)
     tx, ty = _box_center(tgt)
-    return (sx, sy), (tx, ty)
+    dx, dy = tx - sx, ty - sy
+    a = _exit_fraction(src, dx, dy)
+    b = _exit_fraction(tgt, dx, dy)
+    return (sx + a * dx, sy + a * dy), (tx - b * dx, ty - b * dy)
 
 
-def render_diagram(spec: DiagramSpec, out_path: str) -> None:
+# Gap in points between a box border and the arrow's tail / head tip.
+ARROW_SHRINK = 2
+
+
+def build_figure(spec: DiagramSpec):
+    """Draw a spec onto a new figure and return (fig, ax). Shared by
+    render_diagram and derive_ground_truth_boxes so the answer key is always
+    computed from exactly the figure that was saved."""
     boxes: List[Box] = spec["boxes"]
     arrows: List[Arrow] = spec["arrows"]
     canvas: Tuple[float, float] = spec.get("canvas", (12.0, 8.0))
@@ -78,17 +100,18 @@ def render_diagram(spec: DiagramSpec, out_path: str) -> None:
             continue
         (sx, sy), (tx, ty) = _box_edge(by_label[src_label], by_label[tgt_label])
         ls = "--" if style == "dashed" else "-"
-        # Manual dashed line so that the dash spacing matches what the
-        # _find_dash_groups detector tunes for (dash length 3-15 px,
-        # gaps 5-16 px). We draw it as a polyline of short segments.
         arrow = FancyArrowPatch(
             (sx, sy), (tx, ty),
             arrowstyle="-|>", mutation_scale=18,
             linewidth=1.6, linestyle=ls, color="black",
-            shrinkA=18, shrinkB=18,
+            shrinkA=ARROW_SHRINK, shrinkB=ARROW_SHRINK,
         )
         ax.add_patch(arrow)
+    return fig, ax
 
+
+def render_diagram(spec: DiagramSpec, out_path: str) -> None:
+    fig, _ = build_figure(spec)
     fig.savefig(out_path, dpi=120, bbox_inches="tight",
                 facecolor="white", pad_inches=0.3)
     plt.close(fig)
@@ -101,7 +124,9 @@ def render_diagram(spec: DiagramSpec, out_path: str) -> None:
 def diagram_01_three_tier() -> DiagramSpec:
     return {
         "name": "3-tier web app",
-        "canvas": (10, 7),
+        # 11 wide: at 10 the App Server box (x 8.0-10.4) ran off the canvas
+        # and was saved with no right-hand border.
+        "canvas": (11, 7),
         "boxes": [
             (1.0, 5.0, 2.4, 1.2, "Browser"),
             (4.5, 5.0, 2.4, 1.2, "Web Server"),
@@ -300,7 +325,9 @@ def diagram_11_saga() -> DiagramSpec:
             (0.7, 3.0, 2.4, 1.0, "Order Step"),
             (4.7, 3.0, 2.4, 1.0, "Payment Step"),
             (8.7, 3.0, 2.4, 1.0, "Shipping Step"),
-            (4.7, 0.7, 2.4, 1.0, "Saga Log"),
+            # Bottom right, not under Payment Step: in that column the
+            # Orchestrator -> Saga Log arrow ran straight through Payment Step.
+            (8.7, 0.7, 2.4, 1.0, "Saga Log"),
         ],
         "arrows": [
             ("Orchestrator", "Order Step", "dashed"),

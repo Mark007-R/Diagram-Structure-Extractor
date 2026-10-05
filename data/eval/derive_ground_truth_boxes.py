@@ -31,13 +31,12 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, Rectangle
 from PIL import Image
 
-# Reuse the specs and renderer from generate_diagrams.py.
+# Reuse the specs and the exact figure builder from generate_diagrams.py.
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from generate_diagrams import SPECS  # type: ignore
+from generate_diagrams import SPECS, build_figure  # type: ignore
 
 
 PAD_INCHES = 0.3
@@ -45,63 +44,13 @@ DPI = 120
 
 
 def derive_pixel_boxes(spec: dict, target_png: str) -> dict:
-    """Re-render the spec exactly like generate_diagrams.render_diagram() and
+    """Re-render the spec with generate_diagrams.build_figure() and
     map each box's figure-coordinate corners into pixel coordinates of the
     saved PNG. Verified by checking that the re-rendered figure's saved size
     matches the on-disk PNG dimensions for this diagram.
     """
-    canvas = spec["canvas"]
     boxes = spec["boxes"]
-    arrows = spec["arrows"]
-
-    fig, ax = plt.subplots(figsize=canvas, dpi=DPI)
-    ax.set_xlim(0, canvas[0])
-    ax.set_ylim(0, canvas[1])
-    ax.set_aspect("equal")
-    ax.axis("off")
-    fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
-
-    by_label = {}
-    for box in boxes:
-        x, y, w, h, label = box
-        rect = Rectangle(
-            (x, y), w, h, linewidth=1.8, edgecolor="black", facecolor="white"
-        )
-        ax.add_patch(rect)
-        ax.text(
-            x + w / 2,
-            y + h / 2,
-            label,
-            ha="center",
-            va="center",
-            fontsize=11,
-            fontweight="bold",
-            color="black",
-        )
-        by_label[label] = box
-
-    for src_label, tgt_label, style in arrows:
-        if src_label not in by_label or tgt_label not in by_label:
-            continue
-        sx = by_label[src_label][0] + by_label[src_label][2] / 2
-        sy = by_label[src_label][1] + by_label[src_label][3] / 2
-        tx = by_label[tgt_label][0] + by_label[tgt_label][2] / 2
-        ty = by_label[tgt_label][1] + by_label[tgt_label][3] / 2
-        ls = "--" if style == "dashed" else "-"
-        ax.add_patch(
-            FancyArrowPatch(
-                (sx, sy),
-                (tx, ty),
-                arrowstyle="-|>",
-                mutation_scale=18,
-                linewidth=1.6,
-                linestyle=ls,
-                color="black",
-                shrinkA=18,
-                shrinkB=18,
-            )
-        )
+    fig, ax = build_figure(spec)
 
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
