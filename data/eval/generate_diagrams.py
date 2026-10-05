@@ -442,14 +442,21 @@ def main() -> None:
             "icons": [],
         }
 
-    # 15th diagram: the existing test image (ground truth derived from the
-    # already-published extracted_structure.json, manually verified).
+    # 15th diagram: the real draw.io export. Its connectors were re-audited on
+    # 2026-10-05 (three independent readings of zoomed crops, unanimous): the
+    # first key, written from an earlier extraction, listed a connector that is
+    # not drawn (Server Website -> Plant An App - AWS), gave two the wrong end
+    # (the long elbow ends at ELSER Model, not the Elasticsearch Serverless
+    # container; the Database connector ends at the Back-End frame, not the
+    # Elastic Language Client inside it), missed ELSER Model -> Indices, and
+    # recorded double-headed connectors as one-way and dashed ones as solid.
     ground_truth["search_interview_test.png"] = {
         "name": "Plant An App AWS (original test diagram)",
         "source": "interview-test-original",
         "components": [
             "Server Website",
             "Plant An App - AWS",
+            "Back-End",
             "Search UI",
             "Elastic Language Client",
             "Database",
@@ -460,14 +467,14 @@ def main() -> None:
             "ELSER Model",
         ],
         "arrows": [
-            {"source": "Server Website",                "target": "Plant An App - AWS",          "style": "solid"},
-            {"source": "Search UI",                     "target": "Elastic Language Client",      "style": "solid"},
-            {"source": "Elastic Language Client",       "target": "Database",                     "style": "solid"},
-            {"source": "Database",                      "target": "Elastic Connector for MS SQL", "style": "dashed"},
-            {"source": "Elastic Connector for MS SQL",  "target": "DB",                           "style": "dashed"},
-            {"source": "Elastic Connector for MS SQL",  "target": "Indices",                      "style": "dashed"},
-            {"source": "Indices",                       "target": "ELSER Model",                  "style": "dashed"},
-            {"source": "Elastic Language Client",       "target": "Elasticsearch Serverless",     "style": "dashed"},
+            {"source": "Search UI",                    "target": "Elastic Language Client",      "style": "dashed", "bidirectional": True},
+            {"source": "Back-End",                     "target": "Database",                     "style": "dashed", "bidirectional": True},
+            {"source": "Elastic Language Client",      "target": "ELSER Model",                  "style": "dashed", "bidirectional": True},
+            {"source": "Database",                     "target": "Elastic Connector for MS SQL", "style": "dashed"},
+            {"source": "Elastic Connector for MS SQL", "target": "Indices",                      "style": "dashed"},
+            {"source": "Elastic Connector for MS SQL", "target": "DB",                           "style": "dashed"},
+            {"source": "Indices",                      "target": "ELSER Model",                  "style": "dashed"},
+            {"source": "ELSER Model",                  "target": "Indices",                      "style": "dashed"},
         ],
         "icons": ["docker", "MS SQL"],
     }
