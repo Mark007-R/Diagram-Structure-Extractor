@@ -14,8 +14,6 @@ tests/
 data/eval/
 benchmark_*.py
 evaluate_*.py
-tune_*.py
-error_analysis.py
 *.ipynb
 *.docx
 *.md
