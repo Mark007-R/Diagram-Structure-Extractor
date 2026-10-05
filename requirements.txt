@@ -8,12 +8,19 @@ Pillow>=10.0
 matplotlib>=3.7
 networkx>=3.0
 
-# OCR backends (Phase 2a)
+# OCR backends (Phase 2a). PaddleOCR is the default text detector.
+# Python 3.8–3.12 only: paddlepaddle 2.6 has no wheels for 3.13+.
+paddleocr>=2.10,<3       # src/text_detection/paddle_detector.py uses the 2.x API
+paddlepaddle>=2.6,<3     # the engine paddleocr runs on; not pulled in by paddleocr
+# paddlepaddle 2.6 ships protobuf code generated for protobuf 3.x; with 4+ it
+# fails at import ("Descriptors cannot be created directly"), and its Windows
+# wheel pins <=3.20.2. This caps streamlit below 1.61 (see below).
+protobuf>=3.20,<=3.20.2
 easyocr>=1.7.2
-paddleocr>=2.10.0
 pytesseract>=0.3.13
-# NOTE: pytesseract requires the tesseract.exe native binary.
-# See docs/INSTALL_TESSERACT.md for Windows / Linux / macOS instructions.
+# NOTE: pytesseract needs the native tesseract binary, installed separately
+# (UB-Mannheim installer on Windows, apt install tesseract-ocr, brew install
+# tesseract). Tesseract is optional and not a default detector.
 
 # Vision foundation model (Phase 2a, YOLOv8 zero-shot baseline)
 ultralytics>=8.3
@@ -29,6 +36,7 @@ pydantic>=2.5
 rapidfuzz>=3.14
 
 # Day-7 production wrapper
-streamlit>=1.40     # st.image(use_container_width=...) needs 1.40+
+streamlit>=1.40,<1.61   # 1.40+ for st.image(use_container_width=...); 1.61+ needs
+                        # protobuf>=5.26.1, incompatible with the protobuf pin above
 httpx>=0.27         # FastAPI TestClient dep — used by tests/test_api.py
 anthropic>=0.40     # benchmark_claude_vision.py — vision API harness

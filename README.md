@@ -18,7 +18,7 @@ The reliability claim is structural rather than statistical. Output is a Pydanti
 
 Fifteen diagrams, each with a hand-written answer key: 14 synthetic renders of public reference architectures (`data/eval/generate_diagrams.py`) and one real draw.io export (`search_interview_test.png`).
 
-**The synthetic renders were redrawn on 2026-10-05.** Every arrow used to be aimed from box centre to box centre, stopping about 30 px short of each centre, so the horizontal and near-horizontal ones (15 of 52) ran straight through both labels, which made OCR misread them ("Mesrage Broker", "Lainbda Fune"). Arrows now run edge to edge, as in real diagrams. Two layout bugs went with it: diagram_01's App Server box ran off the canvas, and in diagram_11 the Orchestrator → Saga Log arrow passed through Payment Step. The component and edge answer key (`ground_truth.json`) did not change; the pixel box key (`ground_truth_boxes.json`) was re-derived from the new renders (diagram_11's Saga Log moved, diagram_01 is wider). Scores on the old and new renders are not comparable: the same code that scored 0.636 relationship F1 on the old renders scores 0.924 on the new ones.
+**The synthetic renders were redrawn on 2026-10-05.** Every arrow used to be aimed from box centre to box centre, stopping about 30 px short of each centre, so the horizontal and near-horizontal ones (15 of 52) ran straight through both labels, which made OCR misread them ("Mesrage Broker", "Lainbda Fune"). Arrows now run edge to edge, as in real diagrams. Two layout bugs went with it: diagram_01's App Server box ran off the canvas, and in diagram_11 the Orchestrator → Saga Log arrow passed through Payment Step. The component and edge answer key (`ground_truth.json`) did not change; the pixel box key (`ground_truth_boxes.json`) was re-derived from the new renders (diagram_11's Saga Log moved, diagram_01 is wider). Scores on the old and new renders are not comparable: the same code (with EasyOCR, then the default) scored 0.636 relationship F1 on the old renders and 0.924 on the new ones.
 
 ### Detector bake-off
 
@@ -29,7 +29,7 @@ Fifteen diagrams, each with a hand-written answer key: 14 synthetic renders of p
 | Arrows | directed lines | 0.944 | 0.981 | **0.962** | CNN-verified Hough 0.565, plain Hough 0.475, pixel scan 0.226 |
 | Icons | Template matching | 1.000 | 1.000 | **1.000** | CLIP 0.667, HSV 0.000 |
 
-The arrow row scores raw detector output as unordered pairs against the answer-key boxes (`ground_truth_boxes.json`, projected from the generator's box coordinates), pooled over the 14 synthetic diagrams: an endpoint must lie within 25 px of a box border, and a connector found twice counts as a false positive. The "Arrow stage alone" row below runs the same detections through the graph builder instead, which merges duplicates, snaps endpoints within 160 px, projects unmatched ones along the line and scores direction per diagram; that is why it reads 1.000 while this row reads 0.962 (three duplicate segments in diagram_04/09, one diagram_10 endpoint 46 px from its box). **PaddleOCR now edges EasyOCR by 0.012 F1, but the pipeline still defaults to EasyOCR.** Tesseract is wired in but was not scored (no native binary on the benchmark machine). Source: [`results/phase2_leaderboard.csv`](results/phase2_leaderboard.csv)
+The arrow row scores raw detector output as unordered pairs against the answer-key boxes (`ground_truth_boxes.json`, projected from the generator's box coordinates), pooled over the 14 synthetic diagrams: an endpoint must lie within 25 px of a box border, and a connector found twice counts as a false positive. The "Arrow stage alone" row below runs the same detections through the graph builder instead, which merges duplicates, snaps endpoints within 160 px, projects unmatched ones along the line and scores direction per diagram; that is why it reads 1.000 while this row reads 0.962 (three duplicate segments in diagram_04/09, one diagram_10 endpoint 46 px from its box). **PaddleOCR is the default text detector** (it replaced EasyOCR after edging it by 0.012 F1 here; end to end it lifts relationship F1 from 0.924 to 0.946, and the OCR stage runs about 3× faster, 2.3 s → 0.7 s per diagram, roughly 2.4× for the whole pipeline). Tesseract is wired in but was not scored (no native binary on the benchmark machine). Source: [`results/phase2_leaderboard.csv`](results/phase2_leaderboard.csv)
 
 ### Arrows: the directed-lines detector
 
@@ -39,27 +39,27 @@ Each column is that detector with its own default gate setting (old: gate on, ne
 
 | Relationships macro-F1 | Hough lines (old) | Directed lines (new) |
 |---|---:|---:|
-| Full pipeline, 15 diagrams | 0.422 | **0.924** |
-| Full pipeline, 14 synthetic diagrams | 0.428 | **0.968** |
+| Full pipeline, 15 diagrams | 0.422 | **0.946** |
+| Full pipeline, 14 synthetic diagrams | 0.428 | **0.992** |
 | Arrow stage alone (ground-truth boxes, 14 diagrams) | 0.530 | **1.000** |
 | `search_interview_test.png` (the one real-world diagram) | **0.333** | 0.308 |
 
-The third row feeds the answer-key boxes from `ground_truth_boxes.json` to the graph builder, isolating the arrow stage from OCR and box errors. On the synthetic diagrams the remaining full-pipeline misses are one OCR misread that costs an edge ("53 Source" for "S3 Source") and one false edge in diagram_10. **The real-world diagram is still slightly worse:** each detector finds 2 of its 8 edges, but only Indices → ELSER Model is common to both. The old detector also gets Server Website → Plant An App; the new one outputs that edge reversed, so it counts as one of its 3 false positives (the old detector has 2), and finds Elastic Connector → Indices instead. It is a draw.io export with small filled arrowheads (two connectors are double-headed) that the erosion behind the solid-ink orientation check almost wipes out, and its connectors run through nested containers the box stage reports as boxes. Source: [`results/arrow_detector_comparison.csv`](results/arrow_detector_comparison.csv) (`python benchmark_arrow_detectors.py`)
+The third row feeds the answer-key boxes from `ground_truth_boxes.json` to the graph builder, isolating the arrow stage from OCR and box errors. On the synthetic diagrams the only remaining full-pipeline miss is one false edge in diagram_10 (Query API → Event Bus). **The real-world diagram is still slightly worse:** each detector finds 2 of its 8 edges, but only Indices → ELSER Model is common to both. The old detector also gets Server Website → Plant An App; the new one outputs that edge reversed, so it counts as one of its 3 false positives (the old detector has 2), and finds Elastic Connector → Indices instead. It is a draw.io export with small filled arrowheads (two connectors are double-headed) that the erosion behind the solid-ink orientation check almost wipes out, and its connectors run through nested containers the box stage reports as boxes. Source: [`results/arrow_detector_comparison.csv`](results/arrow_detector_comparison.csv) (`python benchmark_arrow_detectors.py`)
 
 ### Stage ablation — and the gate that no longer earns its place
 
 | Stage | Components F1 | Relationships F1 | Schema-valid | Δ relationships |
 |---|---:|---:|---:|---:|
-| A — text only | 0.958 | 0.000 | 1.000 | — |
-| B — + boxes | 0.962 | 0.000 | 1.000 | 0.000 |
-| C — + arrows | 0.962 | **0.924** | 1.000 | **+0.924** |
-| D — + ray intersection | 0.962 | 0.924 | 1.000 | 0.000 |
-| E — + outside-box gate (opt-in) | 0.962 | 0.843 | 1.000 | **−0.082** |
-| F — full pipeline (gate off) | 0.962 | 0.924 | 1.000 | +0.082 |
+| A — text only | 0.983 | 0.000 | 1.000 | — |
+| B — + boxes | 0.989 | 0.000 | 1.000 | 0.000 |
+| C — + arrows | 0.989 | **0.946** | 1.000 | **+0.946** |
+| D — + ray intersection | 0.989 | 0.946 | 1.000 | 0.000 |
+| E — + outside-box gate (opt-in) | 0.989 | 0.843 | 1.000 | **−0.104** |
+| F — full pipeline (gate off) | 0.989 | 0.946 | 1.000 | +0.104 |
 
 Two things worth stating plainly:
 
-- **The outside-box gate is off by default.** It was calibrated for the old Hough detector's box-border artifacts. With the directed-lines detector it costs −0.082 relationship F1 on this benchmark and drops the real-world diagram from 0.308 to 0.167. Border segments map both endpoints to the same box and are discarded without it. It stays available as `outside_box_gate=true` / `--gate`.
+- **The outside-box gate is off by default.** It was calibrated for the old Hough detector's box-border artifacts. With the directed-lines detector it costs −0.104 relationship F1 on this benchmark and drops the real-world diagram from 0.308 to 0.167. Border segments map both endpoints to the same box and are discarded without it. It stays available as `outside_box_gate=true` / `--gate`.
 - **Schema validity is 1.000 at every single stage.** That is the property the design is actually optimising for, and it never moves. It holds by construction (every result is a Pydantic model); the ablation records it rather than re-validating each output.
 
 Source: [`results/ablation.csv`](results/ablation.csv)
@@ -88,7 +88,7 @@ Source: [`results/frontier_comparison.csv`](results/frontier_comparison.csv)
 
 1. **Upload** a PNG, JPG or WebP through the CLI, the FastAPI endpoint or the Streamlit demo.
 2. **`src/pipeline.py`** selects detectors from a `PipelineConfig` and wraps each stage so failure degrades to an empty list — this is what guarantees schema-valid output.
-3. **Four detectors run**: EasyOCR for text, Canny + contours for boxes, directed lines for arrows, template matching for icons. Any stage can be set to `none` to skip it.
+3. **Four detectors run**: PaddleOCR for text, Canny + contours for boxes, directed lines for arrows, template matching for icons. Any stage can be set to `none` to skip it.
 4. **`src/graph/builder.py`** labels boxes with their text and derives relationships from geometry — there are no hardcoded edges, and a pytest AST regression fails the build if any reappear.
 5. **Emit** a typed `ExtractionResult`, plus an annotated PNG, a `networkx` graph render and a flat edge CSV.
 
@@ -96,7 +96,7 @@ Source: [`results/frontier_comparison.csv`](results/frontier_comparison.csv)
 
 | Layer | Technology |
 |---|---|
-| Text | EasyOCR (default) · PaddleOCR (bake-off champion) · Tesseract (optional native binary) |
+| Text | PaddleOCR (champion, default) · EasyOCR · Tesseract (optional native binary) |
 | Boxes | OpenCV Canny + contours · Hough · YOLOv8 |
 | Arrows | directed lines (any-angle Hough + arrowhead orientation) · Hough lines + thinning · CNN verifier |
 | Icons | template matching · CLIP · HSV |
@@ -104,14 +104,15 @@ Source: [`results/frontier_comparison.csv`](results/frontier_comparison.csv)
 | Schema | Pydantic v2 |
 | API | FastAPI · Streamlit demo |
 | Packaging | Docker |
-| Tests | 29 pytest, including a no-hardcoding AST regression |
+| Tests | 35 pytest, including a no-hardcoding AST regression |
 
 ---
 
 ## Quick start
 
 ```bash
-# 1) Local install
+# 1) Local install — Python 3.8–3.12 (3.11 recommended, as in the Dockerfile);
+#    paddlepaddle 2.6, behind the default PaddleOCR detector, has no 3.13+ wheels
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
@@ -121,7 +122,7 @@ python diagram_analysis.py path/to/your/diagram.png
 
 # 3) Modular orchestrator with detector overrides
 python -m src.pipeline data/eval/diagrams_15/diagram_02.png \
-       --out /tmp/out --text paddleocr --arrow hough_lines
+       --out /tmp/out --text easyocr --arrow hough_lines
 
 # 4) FastAPI service
 uvicorn src.api:app --port 8000

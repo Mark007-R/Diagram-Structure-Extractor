@@ -70,6 +70,20 @@ def test_extract_with_every_stage_set_to_none(test_image: str):
     assert s["detectors"]["errors"] == {}
 
 
+def test_detector_that_fails_to_load_is_recorded_not_raised(test_image: str, monkeypatch):
+    """A detector whose module fails to import (missing package, DLL conflict)
+    must degrade like one that raises: empty list plus an error entry."""
+    from src import pipeline as pl
+
+    def broken(name):
+        raise OSError("simulated import failure")
+
+    monkeypatch.setattr(pl, "_text_detect", broken)
+    result = pl.extract(test_image)
+    assert result.texts == []
+    assert "simulated import failure" in result.detectors["errors"]["text"]
+
+
 def test_extract_relationships_all_detected_true(test_image: str):
     """Every relationship returned by the API must be marked detected=True —
     no hardcoded edges leak into the API surface."""

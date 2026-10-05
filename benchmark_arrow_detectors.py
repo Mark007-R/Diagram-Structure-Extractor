@@ -4,7 +4,7 @@ Scores relationships (directed source -> target pairs, macro-F1 with the same
 matching as benchmark_ablation.py) for each arrow detector with the
 outside-box gate on and off, in two settings:
 
-  full pipeline   EasyOCR text + Canny boxes + the arrow detector, over all
+  full pipeline   PaddleOCR text + Canny boxes + the arrow detector, over all
                   15 diagrams, also split into the 14 synthetic diagrams and
                   the one real-world diagram (search_interview_test.png).
   arrow stage     the answer-key boxes from ground_truth_boxes.json (derived
@@ -41,7 +41,7 @@ def _macro(f1s: List[float]) -> float:
 def main() -> None:
     from src.arrow_detection import directed_lines_detector, hough_lines_detector
     from src.box_detection import canny_contours_detector
-    from src.text_detection import easyocr_detector
+    from src.text_detection import paddle_detector
 
     with open(ba.GROUND_TRUTH_PATH, encoding="utf-8") as f:
         gt = json.load(f)
@@ -53,7 +53,7 @@ def main() -> None:
     texts, boxes, arrows = {}, {}, {d: {} for d in detectors}
     for n in names:
         path = os.path.join(ba.DIAGRAMS_DIR, n)
-        texts[n] = easyocr_detector.detect(path)["texts"]
+        texts[n] = paddle_detector.detect(path)["texts"]
         boxes[n] = canny_contours_detector.detect(path)["boxes"]
         for d, mod in detectors.items():
             arrows[d][n] = mod.detect(path)["arrows"]

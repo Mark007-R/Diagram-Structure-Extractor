@@ -53,7 +53,7 @@ async def health() -> dict:
 @app.post("/extract", response_model=ExtractResponse)
 async def extract(
     file: UploadFile = File(...),
-    text: str = Query("easyocr"),
+    text: str = Query("paddleocr"),
     box: str = Query("canny_contours"),
     arrow: str = Query("directed_lines"),
     icon: str = Query("template_matching"),

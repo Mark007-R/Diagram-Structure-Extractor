@@ -3,194 +3,177 @@
   "width": 1248,
   "height": 400,
   "detectors": {
-    "text": "easyocr",
+    "text": "paddleocr",
     "box": "canny_contours",
-    "arrow": "hough_lines",
+    "arrow": "directed_lines",
     "icon": "template_matching",
-    "outside_box_gate": true,
+    "outside_box_gate": false,
+    "rel_max_dist": 160.0,
+    "rel_ray_intersection": true,
     "errors": {}
   },
   "texts": [
     {
       "text": "Server Website",
-      "x": 223,
-      "y": 33,
-      "w": 95,
-      "h": 17,
-      "conf": 0.9420705599730178,
+      "x": 224,
+      "y": 34,
+      "w": 93,
+      "h": 15,
+      "conf": 0.9933243989944458,
       "parent_box": null
     },
     {
-      "text": "Plant An App",
-      "x": 225,
-      "y": 109,
-      "w": 97,
-      "h": 21,
-      "conf": 0.9798027583678562,
-      "parent_box": null
-    },
-    {
-      "text": "AWS",
-      "x": 329,
-      "y": 109,
-      "w": 41,
-      "h": 19,
-      "conf": 0.9998059145700781,
+      "text": "Plant An App - AWS",
+      "x": 224,
+      "y": 108,
+      "w": 145,
+      "h": 22,
+      "conf": 0.9720513224601746,
       "parent_box": null
     },
     {
       "text": "On-prem hardware",
-      "x": 657,
+      "x": 655,
       "y": 111,
-      "w": 115,
-      "h": 17,
-      "conf": 0.9999632828647443,
+      "w": 117,
+      "h": 18,
+      "conf": 0.9989897012710571,
       "parent_box": null
     },
     {
       "text": "Elasticsearch Serverless",
-      "x": 1001,
-      "y": 113,
+      "x": 1000,
+      "y": 111,
       "w": 175,
-      "h": 19,
-      "conf": 0.7232346988613569,
+      "h": 21,
+      "conf": 0.9998306632041931,
+      "parent_box": null
+    },
+    {
+      "text": "elasticsearch",
+      "x": 949,
+      "y": 135,
+      "w": 46,
+      "h": 14,
+      "conf": 0.9614126682281494,
       "parent_box": null
     },
     {
       "text": "Front-End",
-      "x": 66,
-      "y": 168,
-      "w": 95,
-      "h": 25,
-      "conf": 0.9997811910322539,
+      "x": 68,
+      "y": 170,
+      "w": 93,
+      "h": 22,
+      "conf": 0.9998071193695068,
       "parent_box": null
     },
     {
       "text": "Back-End",
-      "x": 250,
-      "y": 168,
-      "w": 93,
-      "h": 25,
-      "conf": 0.9581655334855791,
+      "x": 251,
+      "y": 169,
+      "w": 92,
+      "h": 22,
+      "conf": 0.9873785972595215,
       "parent_box": null
     },
     {
-      "text": "docker",
-      "x": 599,
-      "y": 223,
-      "w": 47,
-      "h": 15,
-      "conf": 0.9888446419196008,
-      "parent_box": null
-    },
-    {
-      "text": "Search U",
-      "x": 79,
-      "y": 237,
-      "w": 67,
-      "h": 17,
-      "conf": 0.9999593492191389,
+      "text": "Search UI",
+      "x": 77,
+      "y": 235,
+      "w": 74,
+      "h": 19,
+      "conf": 0.9860895872116089,
       "parent_box": null
     },
     {
       "text": "Elastic Language",
-      "x": 245,
-      "y": 231,
+      "x": 244,
+      "y": 230,
       "w": 105,
       "h": 17,
-      "conf": 0.9325923036384307,
-      "parent_box": null
-    },
-    {
-      "text": "Elastic Connector for",
-      "x": 605,
-      "y": 236,
-      "w": 129,
-      "h": 19,
-      "conf": 0.7970960193024735,
-      "parent_box": null
-    },
-    {
-      "text": "Indices",
-      "x": 949,
-      "y": 237,
-      "w": 47,
-      "h": 17,
-      "conf": 0.9998551387548381,
-      "parent_box": null
-    },
-    {
-      "text": "ELSER Model",
-      "x": 1115,
-      "y": 235,
-      "w": 87,
-      "h": 19,
-      "conf": 0.6565786437038833,
+      "conf": 0.9999227523803711,
       "parent_box": null
     },
     {
       "text": "Client",
-      "x": 279,
-      "y": 247,
-      "w": 39,
-      "h": 15,
-      "conf": 0.9999739630848833,
+      "x": 276,
+      "y": 245,
+      "w": 41,
+      "h": 18,
+      "conf": 0.9972888827323914,
+      "parent_box": null
+    },
+    {
+      "text": "Elastic Connector for",
+      "x": 603,
+      "y": 236,
+      "w": 129,
+      "h": 18,
+      "conf": 0.9916015863418579,
+      "parent_box": null
+    },
+    {
+      "text": "Indices",
+      "x": 948,
+      "y": 238,
+      "w": 46,
+      "h": 14,
+      "conf": 0.9993482828140259,
+      "parent_box": null
+    },
+    {
+      "text": "ELSER Model",
+      "x": 1118,
+      "y": 238,
+      "w": 84,
+      "h": 14,
+      "conf": 0.9953479170799255,
       "parent_box": null
     },
     {
       "text": "MS SQL",
-      "x": 639,
-      "y": 251,
-      "w": 57,
-      "h": 19,
-      "conf": 0.99694471712883,
+      "x": 641,
+      "y": 254,
+      "w": 53,
+      "h": 15,
+      "conf": 0.9960392117500305,
       "parent_box": null
     },
     {
-      "text": "VPN",
-      "x": 519,
-      "y": 265,
-      "w": 31,
-      "h": 15,
-      "conf": 0.9995971751298354,
+      "text": "-VPN",
+      "x": 516,
+      "y": 262,
+      "w": 34,
+      "h": 19,
+      "conf": 0.9942288398742676,
       "parent_box": null
     },
     {
       "text": "Database",
-      "x": 413,
-      "y": 305,
-      "w": 83,
-      "h": 21,
-      "conf": 0.5055918794433527,
+      "x": 415,
+      "y": 308,
+      "w": 79,
+      "h": 18,
+      "conf": 0.9998850226402283,
       "parent_box": null
     },
     {
       "text": "DB",
-      "x": 783,
+      "x": 781,
       "y": 349,
-      "w": 23,
+      "w": 25,
       "h": 17,
-      "conf": 0.9999846585816098,
+      "conf": 0.9976337552070618,
       "parent_box": null
     }
   ],
   "boxes": [
     {
-      "x": 216,
-      "y": 191,
-      "w": 180,
-      "h": 118,
-      "area": 21240,
-      "is_region": false,
-      "label": "",
-      "entity_type": "component"
-    },
-    {
-      "x": 1082,
-      "y": 172,
-      "w": 136,
-      "h": 122,
-      "area": 16592,
+      "x": 217,
+      "y": 192,
+      "w": 179,
+      "h": 117,
+      "area": 20943,
       "is_region": false,
       "label": "",
       "entity_type": "component"
@@ -198,69 +181,69 @@
     {
       "x": 939,
       "y": 89,
-      "w": 241,
-      "h": 63,
-      "area": 15183,
+      "w": 242,
+      "h": 64,
+      "area": 15488,
       "is_region": false,
-      "label": "Elasticsearch Serverless",
+      "label": "Elasticsearch Serverless elasticsearch",
       "entity_type": "component"
     },
     {
       "x": 152,
       "y": 87,
-      "w": 241,
-      "h": 63,
-      "area": 15183,
+      "w": 242,
+      "h": 64,
+      "area": 15488,
       "is_region": false,
-      "label": "Plant An App AWS",
+      "label": "Plant An App - AWS",
       "entity_type": "component"
     },
     {
       "x": 149,
       "y": 9,
-      "w": 241,
-      "h": 63,
-      "area": 15183,
+      "w": 242,
+      "h": 64,
+      "area": 15488,
       "is_region": false,
       "label": "Server Website",
       "entity_type": "component"
     },
     {
-      "x": 50,
-      "y": 192,
-      "w": 127,
-      "h": 117,
-      "area": 14859,
+      "x": 51,
+      "y": 193,
+      "w": 126,
+      "h": 116,
+      "area": 14616,
       "is_region": false,
-      "label": "",
-      "entity_type": "component"
-    },
-    {
-      "x": 903,
-      "y": 194,
-      "w": 145,
-      "h": 101,
-      "area": 14645,
-      "is_region": false,
-      "label": "Indices",
+      "label": "Search UI",
       "entity_type": "component"
     },
     {
       "x": 598,
       "y": 196,
-      "w": 141,
-      "h": 96,
-      "area": 13536,
+      "w": 142,
+      "h": 97,
+      "area": 13774,
       "is_region": false,
-      "label": "docker Elastic Connector for MS SQL",
+      "label": "Elastic Connector for MS SQL",
       "entity_type": "component"
     },
     {
-      "x": 1106,
-      "y": 198,
-      "w": 108,
-      "h": 92,
-      "area": 9936,
+      "x": 904,
+      "y": 195,
+      "w": 133,
+      "h": 100,
+      "area": 13300,
+      "is_region": false,
+      "label": "Indices",
+      "entity_type": "component"
+    },
+    {
+      "x": 1095,
+      "y": 186,
+      "w": 123,
+      "h": 108,
+      "area": 13284,
       "is_region": false,
       "label": "ELSER Model",
       "entity_type": "component"
@@ -268,101 +251,81 @@
     {
       "x": 637,
       "y": 87,
-      "w": 153,
-      "h": 63,
-      "area": 9639,
+      "w": 154,
+      "h": 64,
+      "area": 9856,
       "is_region": false,
       "label": "On-prem hardware",
       "entity_type": "component"
     },
     {
-      "x": 242,
-      "y": 213,
-      "w": 108,
-      "h": 63,
-      "area": 6804,
+      "x": 231,
+      "y": 210,
+      "w": 123,
+      "h": 70,
+      "area": 8610,
       "is_region": false,
       "label": "Elastic Language Client",
       "entity_type": "component"
     },
     {
-      "x": 767,
-      "y": 268,
-      "w": 49,
-      "h": 76,
-      "area": 3724,
+      "x": 768,
+      "y": 269,
+      "w": 48,
+      "h": 75,
+      "area": 3600,
       "is_region": false,
       "label": "",
       "entity_type": "component"
     },
     {
-      "x": 419,
-      "y": 240,
-      "w": 61,
-      "h": 60,
-      "area": 3660,
+      "x": 420,
+      "y": 241,
+      "w": 60,
+      "h": 59,
+      "area": 3540,
       "is_region": false,
       "label": "",
       "entity_type": "component"
     },
     {
-      "x": 157,
-      "y": 91,
-      "w": 54,
-      "h": 53,
-      "area": 2862,
+      "x": 158,
+      "y": 92,
+      "w": 53,
+      "h": 52,
+      "area": 2756,
       "is_region": false,
       "label": "",
-      "entity_type": "component"
-    },
-    {
-      "x": 76,
-      "y": 230,
-      "w": 75,
-      "h": 29,
-      "area": 2175,
-      "is_region": false,
-      "label": "Search U",
       "entity_type": "component"
     }
   ],
   "regions": [
     {
-      "x": 10,
-      "y": 5,
-      "w": 538,
-      "h": 382,
-      "area": 205516,
+      "x": 11,
+      "y": 6,
+      "w": 537,
+      "h": 381,
+      "area": 204597,
       "is_region": true,
-      "label": "VPN",
+      "label": "Back-End Front-End -VPN Database",
       "entity_type": "component"
     },
     {
-      "x": 32,
-      "y": 120,
-      "w": 475,
-      "h": 231,
-      "area": 109725,
-      "is_region": true,
-      "label": "Front-End Back-End Database",
-      "entity_type": "component"
-    },
-    {
-      "x": 876,
-      "y": 85,
-      "w": 363,
-      "h": 292,
-      "area": 105996,
+      "x": 877,
+      "y": 86,
+      "w": 362,
+      "h": 291,
+      "area": 105342,
       "is_region": true,
       "label": "",
       "entity_type": "component"
     },
     {
-      "x": 575,
-      "y": 82,
-      "w": 278,
-      "h": 298,
-      "area": 82844,
+      "x": 576,
+      "y": 83,
+      "w": 277,
+      "h": 297,
+      "area": 82269,
       "is_region": true,
       "label": "DB",
       "entity_type": "component"
@@ -370,587 +333,979 @@
   ],
   "arrows": [
     {
-      "x1": 53,
-      "y1": 40,
-      "x2": 145,
-      "y2": 40,
-      "direction": "horizontal",
+      "x1": 1104,
+      "y1": 245,
+      "x2": 1236,
+      "y2": 248,
+      "direction": "diagonal",
       "line_style": "solid"
     },
     {
-      "x1": 228,
-      "y1": 40,
-      "x2": 484,
-      "y2": 40,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 147,
-      "y1": 73,
-      "x2": 391,
-      "y2": 73,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 82,
-      "y1": 117,
-      "x2": 138,
-      "y2": 117,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 228,
-      "y1": 118,
-      "x2": 472,
-      "y2": 118,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 293,
-      "y1": 119,
-      "x2": 763,
-      "y2": 119,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 259,
-      "y1": 120,
-      "x2": 1202,
-      "y2": 120,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 1006,
-      "y1": 122,
-      "x2": 1165,
-      "y2": 122,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 952,
-      "y1": 140,
-      "x2": 989,
-      "y2": 140,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 151,
+      "x1": 634,
       "y1": 151,
-      "x2": 393,
+      "x2": 791,
       "y2": 151,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 638,
-      "y1": 151,
-      "x2": 790,
-      "y2": 151,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 937,
-      "y1": 153,
-      "x2": 1180,
-      "y2": 153,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 404,
-      "y1": 169,
-      "x2": 814,
-      "y2": 169,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 881,
-      "y1": 169,
-      "x2": 1151,
-      "y2": 169,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 85,
-      "y1": 181,
-      "x2": 291,
-      "y2": 181,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 128,
-      "y1": 182,
-      "x2": 332,
-      "y2": 182,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 71,
-      "y1": 183,
-      "x2": 292,
-      "y2": 183,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 71,
-      "y1": 186,
-      "x2": 333,
-      "y2": 186,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 71,
-      "y1": 190,
-      "x2": 335,
-      "y2": 190,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 53,
-      "y1": 193,
-      "x2": 372,
-      "y2": 193,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 596,
-      "y1": 194,
-      "x2": 739,
-      "y2": 194,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 916,
-      "y1": 195,
-      "x2": 1214,
-      "y2": 195,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 242,
-      "y1": 210,
-      "x2": 350,
-      "y2": 210,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 596,
-      "y1": 210,
-      "x2": 634,
-      "y2": 210,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 1026,
-      "y1": 219,
-      "x2": 1102,
-      "y2": 219,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 75,
-      "y1": 227,
-      "x2": 151,
-      "y2": 227,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 243,
-      "y1": 237,
-      "x2": 330,
-      "y2": 237,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 123,
-      "y1": 241,
-      "x2": 1155,
-      "y2": 241,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 553,
-      "y1": 243,
-      "x2": 583,
-      "y2": 243,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 705,
-      "y1": 243,
-      "x2": 841,
-      "y2": 243,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 135,
-      "y1": 243,
-      "x2": 1170,
-      "y2": 243,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 610,
-      "y1": 245,
-      "x2": 703,
-      "y2": 245,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 953,
-      "y1": 245,
-      "x2": 985,
-      "y2": 245,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 75,
-      "y1": 245,
-      "x2": 1196,
-      "y2": 245,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 643,
-      "y1": 246,
-      "x2": 679,
-      "y2": 246,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 74,
-      "y1": 257,
-      "x2": 679,
-      "y2": 257,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 437,
-      "y1": 268,
-      "x2": 1103,
-      "y2": 268,
-      "direction": "horizontal",
-      "line_style": "solid"
-    },
-    {
-      "x1": 251,
-      "y1": 278,
-      "x2": 453,
-      "y2": 278,
       "direction": "horizontal",
       "line_style": "solid"
     },
     {
       "x1": 915,
-      "y1": 291,
-      "x2": 1024,
-      "y2": 291,
+      "y1": 120,
+      "x2": 968,
+      "y2": 120,
       "direction": "horizontal",
       "line_style": "solid"
     },
     {
-      "x1": 437,
-      "y1": 292,
-      "x2": 1215,
-      "y2": 292,
+      "x1": 1202,
+      "y1": 120,
+      "x2": 968,
+      "y2": 120,
       "direction": "horizontal",
       "line_style": "solid"
     },
     {
-      "x1": 53,
-      "y1": 306,
-      "x2": 373,
-      "y2": 306,
+      "x1": 57,
+      "y1": 352,
+      "x2": 482,
+      "y2": 352,
       "direction": "horizontal",
       "line_style": "solid"
     },
     {
-      "x1": 417,
-      "y1": 315,
-      "x2": 796,
-      "y2": 315,
+      "x1": 635,
+      "y1": 84,
+      "x2": 791,
+      "y2": 84,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 403,
+      "y1": 170,
+      "x2": 1152,
+      "y2": 170,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 150,
+      "y1": 85,
+      "x2": 394,
+      "y2": 85,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 54,
+      "y1": 383,
+      "x2": 490,
+      "y2": 383,
       "direction": "horizontal",
       "line_style": "solid"
     },
     {
       "x1": 52,
       "y1": 195,
-      "x2": 52,
+      "x2": 174,
+      "y2": 195,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 912,
+      "y1": 373,
+      "x2": 1206,
+      "y2": 373,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 60,
+      "y1": 117,
+      "x2": 165,
+      "y2": 117,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 485,
+      "y1": 117,
+      "x2": 200,
+      "y2": 117,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 147,
+      "y1": 74,
+      "x2": 391,
+      "y2": 74,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 218,
+      "y1": 306,
+      "x2": 374,
       "y2": 306,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 915,
+      "y1": 292,
+      "x2": 1026,
+      "y2": 292,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 12,
+      "y1": 338,
+      "x2": 12,
+      "y2": 86,
       "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 915,
+      "y1": 196,
+      "x2": 1026,
+      "y2": 196,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 218,
+      "y1": 277,
+      "x2": 478,
+      "y2": 280,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 238,
+      "y1": 112,
+      "x2": 150,
+      "y2": 110,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 643,
+      "y1": 257,
+      "x2": 687,
+      "y2": 260,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 30,
+      "y1": 325,
+      "x2": 30,
+      "y2": 145,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1181,
+      "y1": 127,
+      "x2": 969,
+      "y2": 123,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 657,
+      "y1": 115,
+      "x2": 767,
+      "y2": 119,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 391,
+      "y1": 40,
+      "x2": 485,
+      "y2": 40,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 541,
+      "y1": 247,
+      "x2": 913,
+      "y2": 241,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 937,
+      "y1": 87,
+      "x2": 1181,
+      "y2": 87,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 584,
+      "y1": 194,
+      "x2": 740,
+      "y2": 194,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 950,
+      "y1": 243,
+      "x2": 990,
+      "y2": 243,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 937,
+      "y1": 154,
+      "x2": 1181,
+      "y2": 154,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1104,
+      "y1": 196,
+      "x2": 1213,
+      "y2": 194,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 584,
+      "y1": 200,
+      "x2": 639,
+      "y2": 209,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 531,
+      "y1": 343,
+      "x2": 531,
+      "y2": 81,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1236,
+      "y1": 342,
+      "x2": 1236,
+      "y2": 151,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 584,
+      "y1": 209,
+      "x2": 633,
+      "y2": 213,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 150,
+      "y1": 94,
+      "x2": 204,
+      "y2": 132,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 74,
+      "y1": 244,
+      "x2": 391,
+      "y2": 233,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 147,
+      "y1": 7,
+      "x2": 391,
+      "y2": 7,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1104,
+      "y1": 291,
+      "x2": 1216,
+      "y2": 291,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 218,
+      "y1": 193,
+      "x2": 374,
+      "y2": 193,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 617,
+      "y1": 377,
+      "x2": 807,
+      "y2": 377,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 584,
+      "y1": 293,
+      "x2": 740,
+      "y2": 292,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 508,
+      "y1": 326,
+      "x2": 508,
+      "y2": 144,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 218,
+      "y1": 212,
+      "x2": 374,
+      "y2": 210,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 842,
+      "y1": 342,
+      "x2": 842,
+      "y2": 155,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 52,
+      "y1": 306,
+      "x2": 52,
+      "y2": 194,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 882,
+      "y1": 343,
+      "x2": 882,
+      "y2": 151,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 914,
+      "y1": 291,
+      "x2": 914,
+      "y2": 197,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 937,
+      "y1": 141,
+      "x2": 991,
+      "y2": 141,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 364,
+      "y1": 121,
+      "x2": 201,
+      "y2": 124,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 59,
+      "y1": 40,
+      "x2": 148,
+      "y2": 40,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 584,
+      "y1": 346,
+      "x2": 584,
+      "y2": 151,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 657,
+      "y1": 120,
+      "x2": 766,
+      "y2": 116,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 166,
+      "y1": 153,
+      "x2": 394,
+      "y2": 150,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 937,
+      "y1": 106,
+      "x2": 982,
+      "y2": 104,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 427,
+      "y1": 255,
+      "x2": 478,
+      "y2": 257,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 70,
+      "y1": 179,
+      "x2": 156,
+      "y2": 179,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1214,
+      "y1": 195,
+      "x2": 1216,
+      "y2": 292,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 224,
+      "y1": 38,
+      "x2": 313,
+      "y2": 38,
+      "direction": "horizontal",
       "line_style": "solid"
     },
     {
       "x1": 74,
       "y1": 228,
-      "x2": 74,
-      "y2": 259,
-      "direction": "vertical",
+      "x2": 152,
+      "y2": 228,
+      "direction": "horizontal",
       "line_style": "solid"
     },
     {
-      "x1": 147,
-      "y1": 13,
-      "x2": 147,
-      "y2": 150,
-      "direction": "vertical",
+      "x1": 254,
+      "y1": 179,
+      "x2": 337,
+      "y2": 183,
+      "direction": "diagonal",
       "line_style": "solid"
     },
     {
-      "x1": 151,
-      "y1": 228,
-      "x2": 151,
-      "y2": 259,
-      "direction": "vertical",
+      "x1": 500,
+      "y1": 270,
+      "x2": 546,
+      "y2": 267,
+      "direction": "diagonal",
       "line_style": "solid"
     },
     {
-      "x1": 174,
+      "x1": 163,
+      "y1": 131,
+      "x2": 205,
+      "y2": 130,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1104,
       "y1": 195,
-      "x2": 174,
-      "y2": 306,
+      "x2": 1105,
+      "y2": 292,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
       "x1": 218,
       "y1": 194,
-      "x2": 218,
+      "x2": 219,
       "y2": 305,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 240,
-      "y1": 212,
-      "x2": 240,
-      "y2": 277,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 351,
-      "y1": 211,
-      "x2": 351,
-      "y2": 277,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 373,
-      "y1": 193,
-      "x2": 373,
-      "y2": 305,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 393,
-      "y1": 10,
-      "x2": 393,
-      "y2": 225,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 428,
-      "y1": 254,
-      "x2": 428,
-      "y2": 290,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 476,
-      "y1": 258,
-      "x2": 476,
-      "y2": 291,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 508,
-      "y1": 145,
-      "x2": 508,
-      "y2": 325,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 531,
-      "y1": 81,
-      "x2": 531,
-      "y2": 343,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 584,
-      "y1": 152,
-      "x2": 584,
-      "y2": 345,
-      "direction": "vertical",
+      "x1": 431,
+      "y1": 294,
+      "x2": 472,
+      "y2": 295,
+      "direction": "horizontal",
       "line_style": "solid"
     },
     {
       "x1": 595,
-      "y1": 195,
+      "y1": 292,
       "x2": 595,
-      "y2": 291,
+      "y2": 195,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 611,
-      "y1": 213,
-      "x2": 611,
+      "x1": 417,
+      "y1": 320,
+      "x2": 490,
+      "y2": 314,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 150,
+      "y1": 99,
+      "x2": 201,
+      "y2": 99,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 813,
+      "y1": 314,
+      "x2": 768,
+      "y2": 315,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1104,
+      "y1": 268,
+      "x2": 1025,
+      "y2": 268,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 82,
+      "y1": 187,
+      "x2": 156,
+      "y2": 181,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 643,
+      "y1": 263,
+      "x2": 687,
+      "y2": 259,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 789,
+      "y1": 361,
+      "x2": 789,
       "y2": 244,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 634,
-      "y1": 87,
-      "x2": 634,
+      "x1": 635,
+      "y1": 150,
+      "x2": 636,
+      "y2": 85,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 240,
+      "y1": 232,
+      "x2": 289,
+      "y2": 233,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 790,
+      "y1": 85,
+      "x2": 792,
       "y2": 150,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
+      "x1": 174,
+      "y1": 151,
+      "x2": 174,
+      "y2": 84,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 373,
+      "y1": 305,
+      "x2": 373,
+      "y2": 194,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 74,
+      "y1": 260,
+      "x2": 152,
+      "y2": 260,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 813,
+      "y1": 305,
+      "x2": 768,
+      "y2": 302,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 391,
+      "y1": 149,
+      "x2": 391,
+      "y2": 8,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
       "x1": 740,
-      "y1": 195,
+      "y1": 291,
       "x2": 740,
+      "y2": 195,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1026,
+      "y1": 291,
+      "x2": 1026,
+      "y2": 197,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 417,
+      "y1": 314,
+      "x2": 489,
+      "y2": 316,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 429,
+      "y1": 247,
+      "x2": 429,
       "y2": 292,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 769,
-      "y1": 300,
-      "x2": 769,
-      "y2": 335,
-      "direction": "vertical",
+      "x1": 806,
+      "y1": 290,
+      "x2": 811,
+      "y2": 337,
+      "direction": "diagonal",
       "line_style": "solid"
     },
     {
-      "x1": 790,
-      "y1": 87,
-      "x2": 790,
-      "y2": 288,
-      "direction": "vertical",
+      "x1": 937,
+      "y1": 112,
+      "x2": 980,
+      "y2": 113,
+      "direction": "horizontal",
       "line_style": "solid"
     },
     {
-      "x1": 791,
-      "y1": 303,
-      "x2": 791,
-      "y2": 341,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 812,
-      "y1": 301,
-      "x2": 812,
-      "y2": 336,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 842,
-      "y1": 157,
-      "x2": 842,
-      "y2": 340,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 882,
-      "y1": 151,
-      "x2": 882,
-      "y2": 342,
-      "direction": "vertical",
-      "line_style": "solid"
-    },
-    {
-      "x1": 914,
-      "y1": 198,
-      "x2": 914,
-      "y2": 290,
+      "x1": 351,
+      "y1": 278,
+      "x2": 352,
+      "y2": 212,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
       "x1": 937,
-      "y1": 89,
-      "x2": 937,
-      "y2": 152,
+      "y1": 113,
+      "x2": 979,
+      "y2": 110,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1030,
+      "y1": 220,
+      "x2": 1105,
+      "y2": 219,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 147,
+      "y1": 8,
+      "x2": 148,
+      "y2": 72,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 1025,
-      "y1": 196,
-      "x2": 1025,
+      "x1": 624,
+      "y1": 245,
+      "x2": 622,
+      "y2": 199,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 133,
+      "y1": 238,
+      "x2": 174,
+      "y2": 242,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 478,
+      "y1": 290,
+      "x2": 473,
+      "y2": 245,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 268,
+      "y1": 186,
+      "x2": 337,
+      "y2": 186,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 769,
+      "y1": 336,
+      "x2": 774,
       "y2": 291,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 681,
+      "y1": 264,
+      "x2": 622,
+      "y2": 219,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 937,
+      "y1": 152,
+      "x2": 937,
+      "y2": 88,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 1104,
-      "y1": 196,
-      "x2": 1104,
-      "y2": 290,
+      "x1": 74,
+      "y1": 249,
+      "x2": 174,
+      "y2": 248,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1105,
+      "y1": 239,
+      "x2": 1200,
+      "y2": 239,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 240,
+      "y1": 235,
+      "x2": 337,
+      "y2": 247,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 768,
+      "y1": 328,
+      "x2": 812,
+      "y2": 330,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 1181,
+      "y1": 152,
+      "x2": 1181,
+      "y2": 88,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 1180,
-      "y1": 89,
-      "x2": 1180,
-      "y2": 152,
+      "x1": 428,
+      "y1": 266,
+      "x2": 489,
+      "y2": 273,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 254,
+      "y1": 176,
+      "x2": 337,
+      "y2": 176,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 311,
+      "y1": 235,
+      "x2": 352,
+      "y2": 246,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 70,
+      "y1": 187,
+      "x2": 156,
+      "y2": 187,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 241,
+      "y1": 276,
+      "x2": 241,
+      "y2": 210,
       "direction": "vertical",
       "line_style": "solid"
     },
     {
-      "x1": 1215,
-      "y1": 197,
-      "x2": 1215,
-      "y2": 290,
+      "x1": 174,
+      "y1": 306,
+      "x2": 174,
+      "y2": 194,
       "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 662,
+      "y1": 262,
+      "x2": 619,
+      "y2": 200,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 398,
+      "y1": 226,
+      "x2": 398,
+      "y2": 182,
+      "direction": "vertical",
+      "line_style": "solid"
+    },
+    {
+      "x1": 781,
+      "y1": 340,
+      "x2": 807,
+      "y2": 291,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 649,
+      "y1": 264,
+      "x2": 611,
+      "y2": 203,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 770,
+      "y1": 336,
+      "x2": 821,
+      "y2": 373,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 637,
+      "y1": 239,
+      "x2": 586,
+      "y2": 239,
+      "direction": "horizontal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 801,
+      "y1": 360,
+      "x2": 812,
+      "y2": 295,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 440,
+      "y1": 309,
+      "x2": 477,
+      "y2": 325,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 260,
+      "y1": 235,
+      "x2": 308,
+      "y2": 257,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 657,
+      "y1": 256,
+      "x2": 605,
+      "y2": 216,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 788,
+      "y1": 352,
+      "x2": 807,
+      "y2": 312,
+      "direction": "diagonal",
+      "line_style": "solid"
+    },
+    {
+      "x1": 82,
+      "y1": 182,
+      "x2": 137,
+      "y2": 186,
+      "direction": "diagonal",
       "line_style": "solid"
     }
   ],
@@ -976,16 +1331,40 @@
   ],
   "relationships": [
     {
-      "source": "Plant An App AWS",
-      "target": "On-prem hardware",
+      "source": "Plant An App - AWS",
+      "target": "ELSER Model",
       "line_style": "solid",
       "direction": "horizontal",
       "relationship": "connects_to",
       "detected": true
     },
     {
-      "source": "Server Website",
-      "target": "Plant An App AWS",
+      "source": "Indices",
+      "target": "ELSER Model",
+      "line_style": "solid",
+      "direction": "horizontal",
+      "relationship": "connects_to",
+      "detected": true
+    },
+    {
+      "source": "Search UI",
+      "target": "Plant An App - AWS",
+      "line_style": "solid",
+      "direction": "horizontal",
+      "relationship": "connects_to",
+      "detected": true
+    },
+    {
+      "source": "Elastic Connector for MS SQL",
+      "target": "Indices",
+      "line_style": "solid",
+      "direction": "diagonal",
+      "relationship": "connects_to",
+      "detected": true
+    },
+    {
+      "source": "Plant An App - AWS",
+      "target": "Server Website",
       "line_style": "solid",
       "direction": "vertical",
       "relationship": "connects_to",
@@ -993,11 +1372,11 @@
     }
   ],
   "runtimes": {
-    "text": 1.835,
-    "box": 0.004,
-    "arrow": 0.031,
-    "icon": 0.122,
-    "graph": 0.005
+    "text": 1.304,
+    "box": 0.008,
+    "arrow": 0.097,
+    "icon": 0.111,
+    "graph": 0.01
   },
-  "runtime_seconds": 7.602
+  "runtime_seconds": 9.162
 }

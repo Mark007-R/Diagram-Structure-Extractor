@@ -22,6 +22,7 @@ ehthumbs.db
 # Project artifacts (regenerable)
 results/samples/*.png
 results/runs/
+results/ablation.json
 *.pkl
 *.joblib
 

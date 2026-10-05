@@ -1,5 +1,5 @@
 arrow_detector,outside_box_gate,full_pipeline_15,full_pipeline_synthetic_14,full_pipeline_real_1,arrow_stage_gt_boxes_14
 hough_lines,True,0.422,0.428,0.333,0.53
-hough_lines,False,0.483,0.498,0.267,0.519
+hough_lines,False,0.502,0.519,0.267,0.519
 directed_lines,True,0.843,0.891,0.167,1.0
-directed_lines,False,0.924,0.968,0.308,1.0
+directed_lines,False,0.946,0.992,0.308,1.0
