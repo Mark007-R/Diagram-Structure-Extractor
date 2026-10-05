@@ -71,16 +71,19 @@ class Relationship(BaseModel):
 
 
 class PipelineConfig(BaseModel):
-    """Selects which champion detector runs at each stage. Defaults are the
-    Day-3 Phase-2 leaderboard champions."""
+    """Selects which detector runs at each stage. Defaults are the leaderboard
+    champions; "none" skips a stage, which then contributes an empty list."""
     model_config = ConfigDict(extra="forbid")
-    text_detector: Literal["easyocr", "paddleocr", "tesseract"] = "easyocr"
-    box_detector: Literal["canny_contours", "hough", "yolo"] = "canny_contours"
-    arrow_detector: Literal["hough_lines", "pixel_scan", "cnn"] = "hough_lines"
-    icon_detector: Literal["template_matching", "clip", "hsv"] = "template_matching"
+    text_detector: Literal["easyocr", "paddleocr", "tesseract", "none"] = "easyocr"
+    box_detector: Literal["canny_contours", "hough", "yolo", "none"] = "canny_contours"
+    arrow_detector: Literal["directed_lines", "hough_lines", "pixel_scan", "cnn", "none"] = "directed_lines"
+    icon_detector: Literal["template_matching", "clip", "hsv", "none"] = "template_matching"
     # Day-3 finding: arrow segments lying on/inside a box bbox were inflating
-    # recall via the snap-to-adjacency artifact. This gate rejects them.
-    outside_box_gate: bool = True
+    # recall via the snap-to-adjacency artifact. This gate rejects them. Off by
+    # default: with directed_lines it lowers relationship F1 on both the
+    # benchmark and the real-world diagram (border segments map both endpoints
+    # to the same box and are discarded anyway).
+    outside_box_gate: bool = False
     # Day-5 arrow-mapping fix: endpoint snap radius + ray/line intersection
     # fallback for short segments stopping in whitespace. On the synthetic
     # benchmark the ray path never triggers (boxes are dense, nearest-box always
