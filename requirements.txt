@@ -29,6 +29,6 @@ pydantic>=2.5
 rapidfuzz>=3.14
 
 # Day-7 production wrapper
-streamlit>=1.36
+streamlit>=1.40     # st.image(use_container_width=...) needs 1.40+
 httpx>=0.27         # FastAPI TestClient dep — used by tests/test_api.py
 anthropic>=0.40     # benchmark_claude_vision.py — vision API harness
