@@ -34,9 +34,9 @@ def _dedup_boxes(boxes: List[dict], iou_thresh: float = 0.6) -> List[dict]:
     return keep
 
 
-# Champion config (Day-5 Optuna-tuned, see results/box_tuning.json). The
-# defaults below are the live parameters the pipeline uses; the constants are
-# documented so the tuning provenance is auditable.
+# Champion config (Day-5 Optuna-tuned; the tuning script has since been
+# retired). The defaults below are the live parameters the pipeline uses; the
+# constants are documented so the tuning provenance is auditable.
 #
 # Day-5 Phase-4 sweep (40 TPE trials, IoU>=0.5 micro-F1 over the 14 generated
 # diagrams): the original hardcoded values [canny 30/120, min_area 1200,
@@ -54,7 +54,7 @@ def _dedup_boxes(boxes: List[dict], iou_thresh: float = 0.6) -> List[dict]:
 # pool and the schema's `boxes` field. Raising it to 60000 keeps real component
 # boxes as components while still flagging true large containers (e.g. the
 # search_interview platform box at ~204k/105k/82k). This single change lifted
-# relationship micro-F1 0.171 -> 0.250 (see results/relationship_fix.json).
+# relationship micro-F1 0.171 -> 0.250 at the time.
 DEFAULTS = dict(
     canny_low=39,
     canny_high=69,
