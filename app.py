@@ -95,24 +95,44 @@ st.sidebar.markdown(
 )
 
 # ── Upload ───────────────────────────────────────────────────────────────────
+# Sample diagrams from the eval sets, so the demo works without a file of your
+# own. Only the ones present are offered (a deployment may ship a subset).
+_HERE = os.path.dirname(os.path.abspath(__file__))
+SAMPLES = {
+    label: path for label, path in {
+        "Real draw.io export (search architecture)": "search_interview_test.png",
+        "Synthetic: microservices with API gateway": "data/eval/diagrams_15/diagram_02.png",
+        "draw.io style: Kubernetes microservices": "data/eval/drawio_style/diagrams/drawio_03.png",
+    }.items() if os.path.isfile(os.path.join(_HERE, path))
+}
+
 uploaded = st.file_uploader(
     "Upload an architecture diagram (PNG, JPG, WebP)",
     type=["png", "jpg", "jpeg", "webp"],
 )
+sample = None
+if uploaded is None and SAMPLES:
+    sample = st.selectbox("…or try a sample diagram", ["—"] + list(SAMPLES), index=0)
+    if sample == "—":
+        sample = None
 
-if uploaded is None:
-    st.info(
-        "Tip: try one of the 15 benchmark diagrams in `data/eval/diagrams_15/`. "
-        "diagram_01.png is the simplest (3-tier web app, 4 boxes, 3 arrows); "
-        "search_interview_test.png is the original interview diagram."
-    )
+if uploaded is None and sample is None:
+    st.info("Upload a diagram, or pick a sample above, to run the pipeline.")
     st.stop()
 
-# Save upload to a temp file for the pipeline.
-suffix = os.path.splitext(uploaded.name)[1] or ".png"
+# Save the image to a temp file for the pipeline.
+if uploaded is not None:
+    name, data = uploaded.name, uploaded.read()
+else:
+    name = os.path.basename(SAMPLES[sample])
+    with open(os.path.join(_HERE, SAMPLES[sample]), "rb") as f:
+        data = f.read()
+suffix = os.path.splitext(name)[1] or ".png"
 with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-    tmp.write(uploaded.read())
+    tmp.write(data)
     tmp_path = tmp.name
+if sample is not None:
+    st.image(data, caption=sample, width=480)
 
 config = PipelineConfig(
     text_detector=text_detector, box_detector=box_detector,
@@ -145,6 +165,10 @@ st.success(
     f"Schema-valid JSON: ✓ (every field validated by Pydantic v2). "
     f"`result.model_dump()` round-trips through `json.dumps` without loss."
 )
+# A stage that fails returns an empty list (that is what keeps the JSON valid),
+# so say which one failed rather than leave its count silently at zero.
+for stage, err in result.detectors.get("errors", {}).items():
+    st.warning(f"The {stage} detector failed and was skipped — {err}")
 
 # ── Two-column visual ────────────────────────────────────────────────────────
 left, right = st.columns(2)
@@ -173,7 +197,7 @@ dl1, dl2 = st.columns(2)
 dl1.download_button(
     "Download structure.json",
     data=json.dumps(structured, indent=2, ensure_ascii=False),
-    file_name=f"{os.path.splitext(uploaded.name)[0]}_structure.json",
+    file_name=f"{os.path.splitext(name)[0]}_structure.json",
     mime="application/json",
 )
 import csv as _csv
@@ -185,7 +209,7 @@ for r in result.relationships:
 dl2.download_button(
     "Download relationships.csv",
     data=csv_buf.getvalue(),
-    file_name=f"{os.path.splitext(uploaded.name)[0]}_relationships.csv",
+    file_name=f"{os.path.splitext(name)[0]}_relationships.csv",
     mime="text/csv",
 )
 

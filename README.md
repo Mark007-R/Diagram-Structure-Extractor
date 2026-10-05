@@ -1,4 +1,4 @@
-> 🔗 **Live API:** https://iambatman07-diagram-structure-extractor.hf.space — try `/health` and `/extract` · [HF Space](https://huggingface.co/spaces/IamBatman07/Diagram-Structure-Extractor)
+> 🔗 **Live demo:** [HF Space](https://huggingface.co/spaces/IamBatman07/Diagram-Structure-Extractor) — the Streamlit app, with sample diagrams · **API** on the same host: https://iambatman07-diagram-structure-extractor.hf.space — try `/health`, `/extract` and `/docs`
 
 # Diagram-Structure-Extractor
 
